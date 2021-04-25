@@ -29,7 +29,14 @@ export default class PetList extends Component {
     }
   };
 
-  deleteTask = async id => {
+  confirmPetDeletion(pet) {
+    return Alert.alert('Excluir', `Deseja excluir o pet ${pet.nome}?`, {
+      text: 'Sim',
+      onPress: () => this.deleteTask(pet),
+    });
+  }
+
+  deletePet = async id => {
     try {
       await axios.delete(`${server}/pets/${id}`);
       await this.loadPets();
@@ -45,17 +52,27 @@ export default class PetList extends Component {
         {this.state.pets.map(p => (
           <ListItem key={p.id}>
             <Avatar rounded size="large" source={{uri: p.avatarUrl}} />
-            <ListItem.Content>
-              <Text>Nome: {p.nome}</Text>
-              <Text>
-                Idade: {year - moment(p.anoNascimento).format('YYYY')}
-              </Text>
-              <TouchableOpacity onPress={() => this.deleteTask(p.id)}>
-                <Icon size={20} name="trash" />
-              </TouchableOpacity>
+            <ListItem.Content style={styles.listItem}>
+              <View>
+                <Text>Nome: {p.nome}</Text>
+                <Text>
+                  Idade: {year - moment(p.anoNascimento).format('YYYY')}
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  style={{marginRight: 25}}
+                  onPress={() => this.deletePet(p.id)}>
+                  <Icon size={40} name="pencil" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.deletePet(p.id)}>
+                  <Icon size={40} name="trash" />
+                </TouchableOpacity>
+              </View>
             </ListItem.Content>
           </ListItem>
         ))}
+
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.addButton}
@@ -71,6 +88,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: commonStyles.colors.gray,
+  },
+  listItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   addButton: {
     position: 'absolute',
