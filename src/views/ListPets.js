@@ -29,18 +29,30 @@ export default class PetList extends Component {
     }
   };
 
+  deleteTask = async id => {
+    try {
+      await axios.delete(`${server}/pets/${id}`);
+      await this.loadPets();
+    } catch (e) {
+      showError(e);
+    }
+  };
+
   render() {
     const year = moment().locale('pt-br').format('YYYY');
     return (
       <View style={styles.container}>
-        {this.state.pets.map((p, i) => (
-          <ListItem key={i}>
+        {this.state.pets.map(p => (
+          <ListItem key={p.id}>
             <Avatar rounded size="large" source={{uri: p.avatarUrl}} />
             <ListItem.Content>
               <Text>Nome: {p.nome}</Text>
               <Text>
                 Idade: {year - moment(p.anoNascimento).format('YYYY')}
               </Text>
+              <TouchableOpacity onPress={() => this.deleteTask(p.id)}>
+                <Icon size={20} name="trash" />
+              </TouchableOpacity>
             </ListItem.Content>
           </ListItem>
         ))}
