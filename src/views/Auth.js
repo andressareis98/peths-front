@@ -9,10 +9,10 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
+import {Button} from 'react-native-elements';
 
 import axios from 'axios';
 import {server, showError, showSuccess} from '../common';
-import {useNavigation} from '@react-navigation/native';
 
 import {CheckBox} from 'react-native-elements';
 
@@ -21,11 +21,11 @@ import backgroudImage from '../../assets/image/friends.jpg';
 import AuthInput from '../components/AuthInput';
 
 const initialState = {
-  nome: 'Teste',
+  nome: 'Testando',
   crmv: '',
-  email: 'teste@teste.com',
-  senha: '1234',
-  confirmarSenha: '1234',
+  email: 'teste1@teste.com',
+  senha: '1234567',
+  confirmarSenha: '1234567',
   isSelected: false,
   stageNew: false,
 };
@@ -76,6 +76,22 @@ export default class Auth extends Component {
   };
 
   render() {
+    const validations = [];
+
+    validations.push(this.state.email && this.state.email.includes('@'));
+    validations.push(this.state.senha && this.state.senha.length >= 6);
+
+    if (this.state.stageNew) {
+      validations.push(this.state.nome && this.state.nome.trim().length >= 2);
+      validations.push(this.state.senha === this.state.confirmarSenha);
+    }
+
+    if (this.state.stageNew && this.state.isSelected) {
+      validations.push(this.state.crmv && this.state.crmv.trim().length >= 3);
+    }
+
+    const validForm = validations.reduce((t, a) => t && a);
+
     return (
       <ImageBackground style={styles.background} source={backgroudImage}>
         <SafeAreaView style={styles.container}>
@@ -143,13 +159,13 @@ export default class Auth extends Component {
                 onChangeText={confirmarSenha => this.setState({confirmarSenha})}
               />
             )}
-            <TouchableOpacity onPress={this.signinOrSignup}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>
-                  {this.state.stageNew ? 'Registrar' : 'Entrar'}
-                </Text>
-              </View>
-            </TouchableOpacity>
+
+            <Button
+              onPress={this.signinOrSignup}
+              containerStyle={styles.button}
+              disabled={!validForm}
+              title={this.state.stageNew ? 'Registrar' : 'Entrar'}
+            />
           </View>
           <TouchableOpacity
             style={{padding: 10}}
@@ -158,7 +174,7 @@ export default class Auth extends Component {
             }}>
             <Text style={styles.buttonText}>
               {this.state.stageNew
-                ? 'Já póssui conta?'
+                ? 'Já possui conta?'
                 : 'Ainda não possui conta?'}
             </Text>
           </TouchableOpacity>
@@ -201,7 +217,6 @@ const styles = StyleSheet.create({
     backgroundColor: commonStyles.colors.white,
   },
   button: {
-    backgroundColor: commonStyles.colors.primary,
     marginTop: 10,
     padding: 10,
     alignItems: 'center',
