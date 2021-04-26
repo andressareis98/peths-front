@@ -6,6 +6,7 @@ import commonStyles from './commonStyles';
 
 import Auth from './views/Auth';
 import PetList from './views/ListPets';
+import PetForm from './views/PetForm';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default props => {
           component={PetList}
           options={{headerShown: false}}
         />
+        <Stack.Screen name="PetForm" component={PetForm} />
       </Stack.Navigator>
     </NavigationContainer>
   );

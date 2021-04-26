@@ -62,7 +62,7 @@ export default class PetList extends Component {
               <View style={{flexDirection: 'row'}}>
                 <TouchableOpacity
                   style={{marginRight: 25}}
-                  onPress={() => this.deletePet(p.id)}>
+                  onPress={() => this.props.navigation.navigate('PetForm', p)}>
                   <Icon size={40} name="pencil" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.deletePet(p.id)}>
@@ -76,7 +76,7 @@ export default class PetList extends Component {
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.addButton}
-          onPress={() => navigation.push('PetForm')}>
+          onPress={() => this.props.navigation.navigate('PetForm')}>
           <Icon name="plus" size={20} color={commonStyles.colors.white} />
         </TouchableOpacity>
       </View>
