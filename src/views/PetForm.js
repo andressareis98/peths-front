@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useState} from 'react';
 import {
   View,
@@ -6,11 +7,28 @@ import {
   StyleSheet,
   Textarea,
   Button,
+  Alert,
 } from 'react-native';
+import {server, showError, showSuccess} from '../common';
 
 import commonStyles from '../commonStyles';
 
 export default ({route, navigation}) => {
+  addPet = async pet => {
+    try {
+      await axios.post(`${server}/pets`, {
+        avatarUrl: pet.avatarUrl ? pet.avatarUrl : '',
+        nome: pet.nome,
+        anoNascimento: pet.anoNascimento,
+        peso: pet.peso,
+        sexo: pet.sexo,
+        observacoes: pet.observacoes ? pet.observacoes : '',
+      });
+    } catch (e) {
+      showError(e);
+    }
+  };
+
   const [pet, setPet] = useState(route.params ? route.params : {});
   return (
     <View style={styles.form}>
@@ -59,6 +77,7 @@ export default ({route, navigation}) => {
       <Button
         title="Salvar"
         onPress={() => {
+          this.addPet(pet);
           navigation.goBack();
         }}
       />
