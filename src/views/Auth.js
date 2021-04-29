@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
 import {
-  ImageBackground,
+  Image,
   Text,
   StyleSheet,
   View,
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  Alert,
 } from 'react-native';
-import {Button} from 'react-native-elements';
 
 import axios from 'axios';
 import {server, showError, showSuccess} from '../common';
@@ -17,7 +15,6 @@ import {server, showError, showSuccess} from '../common';
 import {CheckBox} from 'react-native-elements';
 
 import commonStyles from '../commonStyles';
-import backgroudImage from '../../assets/image/friends.jpg';
 import AuthInput from '../components/AuthInput';
 
 const initialState = {
@@ -26,7 +23,7 @@ const initialState = {
   email: 'teste1@teste.com',
   senha: '1234567',
   confirmarSenha: '1234567',
-  isSelected: false,
+  isVeterenarySelected: false,
   stageNew: false,
 };
 
@@ -52,7 +49,7 @@ export default class Auth extends Component {
         senha: this.state.senha,
       });
 
-      showSuccess('Usuário cadastro!');
+      showSuccess('Usuário cadastrado!');
       this.setState({...initialState});
     } catch (e) {
       showError(e);
@@ -86,156 +83,135 @@ export default class Auth extends Component {
       validations.push(this.state.senha === this.state.confirmarSenha);
     }
 
-    if (this.state.stageNew && this.state.isSelected) {
+    if (this.state.stageNew && this.state.isVeterenarySelected) {
       validations.push(this.state.crmv && this.state.crmv.trim().length >= 3);
     }
 
     const validForm = validations.reduce((t, a) => t && a);
 
     return (
-      <ImageBackground style={styles.background} source={backgroudImage}>
-        <SafeAreaView style={styles.container}>
-          <StatusBar />
-
-          <Text style={styles.title}>Peths</Text>
-          <View style={styles.formContainer}>
-            <Text style={styles.subtitle}>
-              {this.state.stageNew ? 'Cadastrar' : 'Entrar'}
-            </Text>
-
-            {this.state.stageNew && (
-              <AuthInput
-                icon="user"
-                placeholder="Nome"
-                value={this.state.nome}
-                style={styles.input}
-                onChangeText={nome => this.setState({nome})}
+      <SafeAreaView style={styles.container}>
+        <StatusBar />
+        <Image
+          style={styles.image}
+          source={require('../../assets/image/catdog.png')}
+        />
+        <View style={styles.inputArea}>
+          {this.state.stageNew && (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <CheckBox
+                size={30}
+                checkedColor={commonStyles.colors.white}
+                uncheckedColor={commonStyles.colors.white}
+                checked={this.state.isVeterenarySelected}
+                onPress={() =>
+                  this.setState({
+                    isVeterenarySelected: !this.state.isVeterenarySelected,
+                  })
+                }
               />
-            )}
-
-            {this.state.stageNew && (
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <CheckBox
-                  checked={this.state.isSelected}
-                  onPress={() =>
-                    this.setState({isSelected: !this.state.isSelected})
-                  }
-                />
-                <Text style={styles.label}>Sou um veterinário</Text>
-              </View>
-            )}
-
-            {this.state.stageNew && this.state.isSelected && (
-              <AuthInput
-                icon="vcard"
-                placeholder="CRMV"
-                value={this.state.crmv}
-                style={styles.input}
-                onChangeText={crmv => this.setState({crmv})}
-              />
-            )}
+              <Text style={styles.checkboxText}>Sou um veterinário</Text>
+            </View>
+          )}
+          {this.state.stageNew && (
             <AuthInput
-              icon="at"
-              placeholder="E-mail"
-              value={this.state.email}
-              style={styles.input}
-              onChangeText={email => this.setState({email})}
+              icon="user"
+              placeholder="Nome"
+              value={this.state.nome}
+              onChangeText={nome => this.setState({nome})}
             />
+          )}
+
+          {this.state.stageNew && this.state.isVeterenarySelected && (
             <AuthInput
-              icon="lock"
-              placeholder="Senha"
+              icon="vcard"
+              placeholder="CRMV"
+              value={this.state.crmv}
+              onChangeText={crmv => this.setState({crmv})}
+            />
+          )}
+          <AuthInput
+            icon="at"
+            placeholder="E-mail"
+            value={this.state.email}
+            onChangeText={email => this.setState({email})}
+          />
+          <AuthInput
+            icon="lock"
+            placeholder="Senha"
+            secureTextEntry={true}
+            value={this.state.senha}
+            onChangeText={senha => this.setState({senha})}
+          />
+          {this.state.stageNew && (
+            <AuthInput
+              icon="asterisk"
+              placeholder="Confirmar senha"
               secureTextEntry={true}
-              value={this.state.senha}
-              style={styles.input}
-              onChangeText={senha => this.setState({senha})}
+              value={this.state.confirmarSenha}
+              onChangeText={confirmarSenha => this.setState({confirmarSenha})}
             />
-            {this.state.stageNew && (
-              <AuthInput
-                icon="asterisk"
-                placeholder="Confirmar senha"
-                secureTextEntry={true}
-                value={this.state.confirmarSenha}
-                style={styles.input}
-                onChangeText={confirmarSenha => this.setState({confirmarSenha})}
-              />
-            )}
+          )}
 
-            <Button
-              onPress={this.signinOrSignup}
-              containerStyle={styles.button}
-              disabled={!validForm}
-              title={this.state.stageNew ? 'Registrar' : 'Entrar'}
-            />
-          </View>
           <TouchableOpacity
-            style={{padding: 10}}
-            onPress={() => {
-              this.setState({stageNew: !this.state.stageNew});
-            }}>
-            <Text style={styles.buttonText}>
-              {this.state.stageNew
-                ? 'Já possui conta?'
-                : 'Ainda não possui conta?'}
+            style={styles.customButton}
+            onPress={this.signinOrSignup}
+            disabled={!validForm}>
+            <Text style={styles.customButtonText}>
+              {this.state.stageNew ? 'Registrar' : 'Entrar'}
             </Text>
           </TouchableOpacity>
-        </SafeAreaView>
-      </ImageBackground>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            this.setState({stageNew: !this.state.stageNew});
+          }}>
+          <Text style={styles.boldText}>
+            {this.state.stageNew
+              ? 'Já possui conta?'
+              : 'Ainda não possui conta?'}
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    width: '100%',
-  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: commonStyles.colors.primary,
   },
-  title: {
-    fontFamily: commonStyles.fontFamily,
-    color: commonStyles.colors.primary,
-    fontSize: 70,
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontFamily: commonStyles.fontFamily,
-    fontSize: 20,
-    color: commonStyles.colors.white,
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  formContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    padding: 20,
-    width: '90%',
-  },
-  input: {
-    marginTop: 10,
-    backgroundColor: commonStyles.colors.white,
-  },
-  button: {
-    marginTop: 10,
+  inputArea: {
     padding: 10,
+    width: '100%',
+  },
+  customButton: {
+    height: 50,
+    backgroundColor: commonStyles.colors.secundary,
+    borderRadius: 25,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonText: {
-    fontFamily: commonStyles.fontFamily,
+  customButtonText: {
+    fontSize: commonStyles.sizes.buttonText,
     color: commonStyles.colors.white,
-    fontSize: 20,
+    padding: 1,
   },
-
-  checkboxContainer: {
-    flexDirection: 'row',
-    marginBottom: 20,
+  boldText: {
+    fontSize: 15,
+    color: commonStyles.colors.secundary,
+    fontWeight: 'bold',
   },
   checkbox: {
     alignSelf: 'center',
   },
-  label: {
-    margin: 8,
+  checkboxText: {
     color: commonStyles.colors.white,
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 });
