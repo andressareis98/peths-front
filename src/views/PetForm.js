@@ -1,15 +1,21 @@
 import axios from 'axios';
 import React, {useState} from 'react';
 import {
+  Platform,
   View,
   Text,
   TextInput,
   StyleSheet,
-  Textarea,
   Button,
-  Alert,
+  TouchableOpacity,
 } from 'react-native';
+
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import {server, showError, showSuccess} from '../common';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import moment from 'moment';
 
 import commonStyles from '../commonStyles';
 
@@ -29,7 +35,55 @@ export default ({route, navigation}) => {
     }
   };
 
-  const [pet, setPet] = useState(route.params ? route.params : {});
+  const [pet, setPet] = useState(
+    route.params
+      ? {
+          avatarUrl: route.params.avatarUrl,
+          nome: route.params.nome,
+          anoNascimento: new Date(route.params.anoNascimento),
+          peso: route.params.peso,
+          sexo: route.params.sexo,
+          observações: route.params.observacoes,
+          showDatePicker: false,
+        }
+      : {
+          avatarUrl: '',
+          nome: '',
+          anoNascimento: new Date(),
+          peso: '',
+          sexo: '',
+          observações: '',
+          showDatePicker: false,
+        },
+  );
+
+  getDatePicker = () => {
+    let datePicker = (
+      <DateTimePicker
+        value={pet.anoNascimento}
+        mode={'date'}
+        onChange={(_, anoNascimento) =>
+          setPet({...pet, anoNascimento, showDatePicker: false})
+        }
+      />
+    );
+
+    const dateString = moment(pet.anoNascimento).format('DD-MM-YYYY');
+
+    if (Platform.OS === 'android') {
+      datePicker = (
+        <View>
+          <TouchableOpacity
+            onPress={() => setPet({...pet, showDatePicker: true})}>
+            <Text>{dateString}</Text>
+          </TouchableOpacity>
+          {pet.showDatePicker && datePicker}
+        </View>
+      );
+    }
+    return datePicker;
+  };
+
   return (
     <View style={styles.form}>
       <Text>Avatar Url: </Text>
@@ -47,12 +101,7 @@ export default ({route, navigation}) => {
         value={pet.nome}
       />
       <Text>Ano Nascimento: </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={anoNascimento => setPet({...pet, anoNascimento})}
-        placeholder="Informe o ano de nascimento"
-        value={pet.anoNascimento}
-      />
+      {this.getDatePicker()}
       <Text>Peso: </Text>
       <TextInput
         style={styles.input}
@@ -96,5 +145,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 5,
     padding: 10,
+  },
+  datePicker: {
+    width: 350,
   },
 });
