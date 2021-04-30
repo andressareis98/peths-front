@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ListItem, Avatar} from 'react-native-elements';
+import {Avatar} from 'react-native-elements';
 import {
   View,
   Text,
@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  ScrollView,
   FlatList,
   RefreshControl,
 } from 'react-native';

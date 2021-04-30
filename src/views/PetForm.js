@@ -10,14 +10,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import {Avatar} from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
-import {server, showError, showSuccess} from '../common';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import moment from 'moment';
 
+import {server, showError, showSuccess} from '../common';
 import commonStyles from '../commonStyles';
+import FormPetInput from '../components/FormPetInput';
 
 export default ({route, navigation}) => {
   addPet = async pet => {
@@ -67,7 +67,8 @@ export default ({route, navigation}) => {
           showDatePicker: false,
         }
       : {
-          avatarUrl: '',
+          avatarUrl:
+            'https://image.freepik.com/vetores-gratis/desenho-fofo-de-gato-e-cachorro_138676-3018.jpg',
           nome: '',
           anoNascimento: new Date(),
           peso: '',
@@ -95,7 +96,10 @@ export default ({route, navigation}) => {
         <View>
           <TouchableOpacity
             onPress={() => setPet({...pet, showDatePicker: true})}>
-            <Text>{dateString}</Text>
+            <View style={styles.containerDatePicker}>
+              <Icon style={styles.icon} size={20} name="birthday-cake" />
+              <Text style={styles.textDatePicker}>{dateString}</Text>
+            </View>
           </TouchableOpacity>
           {pet.showDatePicker && datePicker}
         </View>
@@ -105,81 +109,125 @@ export default ({route, navigation}) => {
   };
 
   return (
-    <View style={styles.form}>
-      <Text>Avatar Url: </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={avatarUrl => setPet({...pet, avatarUrl})}
-        placeholder="Informe o avatar Url"
-        value={pet.avatarUrl}
-      />
-      <Text>Nome: </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={nome => setPet({...pet, nome})}
-        placeholder="Informe o nome"
-        value={pet.nome}
-      />
-      <Text>Ano Nascimento: </Text>
-      {this.getDatePicker()}
-      <Text>Peso: </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={peso => setPet({...pet, peso})}
-        placeholder="Informe o peso"
-        value={pet.peso}
-      />
-      <Text>Sexo: </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={sexo => setPet({...pet, sexo})}
-        placeholder="Informe o sexo"
-        value={pet.sexo}
-      />
-      <Text>Observações: </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={observacoes => setPet({...pet, observacoes})}
-        placeholder="Informe alergias ou informações relevantes sobre o pet"
-        value={pet.observacoes}
-      />
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <View style={styles.avatar}>
+          <Avatar rounded size="large" source={{uri: pet.avatarUrl}} />
+        </View>
+        <View>
+          <FormPetInput
+            icon="photo"
+            onChangeText={avatarUrl => setPet({...pet, avatarUrl})}
+            placeholder="Informe o avatar Url"
+            value={pet.avatarUrl}
+          />
 
-      {pet.id && (
-        <Button
-          title="Editar"
-          onPress={() => {
-            this.editPet(pet);
-            navigation.goBack();
-          }}
-        />
-      )}
+          <FormPetInput
+            icon="paw"
+            onChangeText={nome => setPet({...pet, nome})}
+            placeholder="Informe o nome do pet"
+            value={pet.nome}
+          />
 
-      {!pet.id && (
-        <Button
-          title="Adicionar"
-          onPress={() => {
-            this.addPet(pet);
-            navigation.goBack();
-          }}
-        />
-      )}
+          {this.getDatePicker()}
+
+          <FormPetInput
+            icon="weight"
+            onChangeText={peso => setPet({...pet, peso})}
+            placeholder="Informe o peso"
+            value={pet.peso}
+          />
+
+          <FormPetInput
+            icon="venus-mars"
+            onChangeText={sexo => setPet({...pet, sexo})}
+            placeholder="Informe o sexo"
+            value={pet.sexo}
+          />
+
+          <FormPetInput
+            icon="plus"
+            onChangeText={observacoes => setPet({...pet, observacoes})}
+            placeholder="Alergias / informações relevantes"
+            value={pet.observacoes}
+          />
+
+          {pet.id && (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.editPet(pet);
+                navigation.goBack();
+              }}>
+              <Text style={styles.customButtonText}>Salvar Alterações</Text>
+            </TouchableOpacity>
+          )}
+
+          {!pet.id && (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.addPet(pet);
+                navigation.goBack();
+              }}>
+              <Text style={styles.customButtonText}>Adicionar Pet</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  form: {
-    padding: 10,
+  container: {
+    flex: 1,
+    paddingTop: 40,
+    paddingRight: 15,
+    paddingLeft: 15,
+    backgroundColor: commonStyles.colors.primary,
   },
-  input: {
-    height: 40,
-    borderColor: commonStyles.colors.primary,
-    borderWidth: 1,
-    marginBottom: 10,
+  formContainer: {
+    backgroundColor: commonStyles.colors.tertiary,
+    flex: 1,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    padding: 15,
+    alignItems: 'center',
+  },
+  avatar: {
+    marginTop: -50,
+  },
+  containerDatePicker: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
+    height: 45,
+    backgroundColor: '#fbfbfb',
     borderRadius: 5,
-    padding: 10,
+    marginTop: 15,
   },
-  datePicker: {
-    width: 350,
+  icon: {
+    color: commonStyles.colors.secundary,
+  },
+  textDatePicker: {
+    flex: 1,
+    fontSize: 15,
+    color: commonStyles.colors.secundary,
+    marginLeft: 10,
+  },
+  button: {
+    height: 45,
+    marginTop: 30,
+    borderRadius: 5,
+    backgroundColor: commonStyles.colors.secundary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  customButtonText: {
+    fontSize: 15,
+    color: commonStyles.colors.white,
   },
 });

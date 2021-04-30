@@ -24,7 +24,11 @@ export default props => {
           component={PetList}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="PetForm" component={PetForm} />
+        <Stack.Screen
+          name="PetForm"
+          options={{title: 'Cadastro do Pet'}}
+          component={PetForm}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
