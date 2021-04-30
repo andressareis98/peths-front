@@ -56,16 +56,7 @@ export default ({route, navigation}) => {
 
   const [pet, setPet] = useState(
     route.params
-      ? {
-          id: route.params.id,
-          avatarUrl: route.params.avatarUrl,
-          nome: route.params.nome,
-          anoNascimento: new Date(route.params.anoNascimento),
-          peso: route.params.peso,
-          sexo: route.params.sexo,
-          observações: route.params.observacoes,
-          showDatePicker: false,
-        }
+      ? {...route.params, anoNascimento: new Date(route.params.anoNascimento)}
       : {
           avatarUrl:
             'https://image.freepik.com/vetores-gratis/desenho-fofo-de-gato-e-cachorro_138676-3018.jpg',
