@@ -23,7 +23,26 @@ export default ({route, navigation}) => {
   addPet = async pet => {
     try {
       await axios.post(`${server}/pets`, {
-        avatarUrl: pet.avatarUrl ? pet.avatarUrl : '',
+        avatarUrl: pet.avatarUrl
+          ? pet.avatarUrl
+          : 'https://image.freepik.com/vetores-gratis/desenho-fofo-de-gato-e-cachorro_138676-3018.jpg',
+        nome: pet.nome,
+        anoNascimento: pet.anoNascimento,
+        peso: pet.peso,
+        sexo: pet.sexo,
+        observacoes: pet.observacoes ? pet.observacoes : '',
+      });
+    } catch (e) {
+      showError(e);
+    }
+  };
+
+  editPet = async pet => {
+    try {
+      await axios.put(`${server}/pets/${pet.id}`, {
+        avatarUrl: pet.avatarUrl
+          ? pet.avatarUrl
+          : 'https://image.freepik.com/vetores-gratis/desenho-fofo-de-gato-e-cachorro_138676-3018.jpg',
         nome: pet.nome,
         anoNascimento: pet.anoNascimento,
         peso: pet.peso,
@@ -38,6 +57,7 @@ export default ({route, navigation}) => {
   const [pet, setPet] = useState(
     route.params
       ? {
+          id: route.params.id,
           avatarUrl: route.params.avatarUrl,
           nome: route.params.nome,
           anoNascimento: new Date(route.params.anoNascimento),
@@ -123,13 +143,26 @@ export default ({route, navigation}) => {
         placeholder="Informe alergias ou informações relevantes sobre o pet"
         value={pet.observacoes}
       />
-      <Button
-        title="Salvar"
-        onPress={() => {
-          this.addPet(pet);
-          navigation.goBack();
-        }}
-      />
+
+      {pet.id && (
+        <Button
+          title="Editar"
+          onPress={() => {
+            this.editPet(pet);
+            navigation.goBack();
+          }}
+        />
+      )}
+
+      {!pet.id && (
+        <Button
+          title="Adicionar"
+          onPress={() => {
+            this.addPet(pet);
+            navigation.goBack();
+          }}
+        />
+      )}
     </View>
   );
 };
