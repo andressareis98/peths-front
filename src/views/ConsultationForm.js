@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
 import {server, showError, showSuccess} from '../common';
+import PetDetails from '../components/PetDetails';
 
 export default ({route, navigation}) => {
   const [consultation, setConsultation] = useState({
@@ -15,11 +16,11 @@ export default ({route, navigation}) => {
     showDatePicker: false,
   });
 
-  pet = route.params.id;
+  pet = route.params;
 
   addConsult = async consultation => {
     try {
-      await axios.post(`${server}/pets/${pet}/consultations`, {
+      await axios.post(`${server}/pets/${pet.id}/consultations`, {
         data: consultation.data,
         peso: consultation.peso,
         diagnostico: consultation.diagnostico,
@@ -30,10 +31,25 @@ export default ({route, navigation}) => {
     }
   };
 
-  /* saveConsultation = (pet, consultation) => {
+  editPet = async () => {
+    try {
+      await axios.put(`${server}/pets/${pet.id}`, {
+        avatarUrl: pet.avatarUrl,
+        nome: pet.nome,
+        anoNascimento: pet.anoNascimento,
+        peso: consultation.peso,
+        sexo: pet.sexo,
+        observacoes: pet.observacoes,
+      });
+    } catch (e) {
+      showError(e);
+    }
+  };
+
+  saveConsultation = consultation => {
     addConsult(consultation);
-    editPet(pet);
-  }; */
+    editPet();
+  };
 
   getDatePicker = () => {
     let datePicker = (
@@ -68,6 +84,7 @@ export default ({route, navigation}) => {
   console.warn(this.pet);
   return (
     <View>
+      <PetDetails pet={pet} />
       <Text>Data: </Text>
       {this.getDatePicker()}
 
@@ -105,7 +122,7 @@ export default ({route, navigation}) => {
 
       <TouchableOpacity
         onPress={() => {
-          this.addConsult(consultation);
+          this.saveConsultation(consultation);
           navigation.goBack();
         }}>
         <Text>Salvar</Text>
