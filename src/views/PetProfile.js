@@ -23,6 +23,7 @@ const initialState = {
   consultations: [],
   vaccines: [],
   tabStatus: 'consultas',
+  form: 'ConsultationForm',
 };
 
 export default class PetProfile extends Component {
@@ -73,7 +74,12 @@ export default class PetProfile extends Component {
 
           <View style={styles.tabContainer}>
             <TouchableOpacity
-              onPress={() => this.setState({tabStatus: 'consultas'})}
+              onPress={() =>
+                this.setState({
+                  tabStatus: 'consultas',
+                  form: 'ConsultationForm',
+                })
+              }
               style={[
                 styles.tab,
                 this.state.tabStatus === 'consultas' && styles.btnTabActive,
@@ -81,7 +87,9 @@ export default class PetProfile extends Component {
               <Text>Consultas</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.setState({tabStatus: 'vacinas'})}
+              onPress={() =>
+                this.setState({tabStatus: 'vacinas', form: 'VaccineForm'})
+              }
               style={[
                 styles.tab,
                 this.state.tabStatus === 'vacinas' && styles.btnTabActive,
@@ -118,6 +126,15 @@ export default class PetProfile extends Component {
             )}
           </View>
         </View>
+
+        {this.usuario.crmv.trim() <= 0 && (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.addButton}
+            onPress={() => this.props.navigation.navigate(this.state.form)}>
+            <Icon name="plus" size={20} color={commonStyles.colors.secundary} />
+          </TouchableOpacity>
+        )}
       </SafeAreaView>
     );
   }
