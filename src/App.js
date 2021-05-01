@@ -7,6 +7,7 @@ import commonStyles from './commonStyles';
 import Auth from './views/Auth';
 import PetList from './views/ListPets';
 import PetForm from './views/PetForm';
+import PetProfile from './views/PetProfile';
 import VeterinaryHome from './views/VeterinaryHome';
 
 const Stack = createStackNavigator();
@@ -29,6 +30,11 @@ export default props => {
           name="PetForm"
           options={{title: 'Cadastro do Pet'}}
           component={PetForm}
+        />
+        <Stack.Screen
+          name="PetProfile"
+          component={PetProfile}
+          options={{title: 'Informações do pet', headerTitleAlign: 'center'}}
         />
         <Stack.Screen
           name="VeterinaryHome"

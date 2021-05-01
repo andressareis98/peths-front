@@ -85,7 +85,14 @@ export default class PetList extends Component {
           data={this.state.pets}
           renderItem={({item}) => (
             <View style={styles.petItem}>
-              <TouchableOpacity style={styles.seeProfile}>
+              <TouchableOpacity
+                style={styles.seeProfile}
+                onPress={() =>
+                  this.props.navigation.navigate('PetProfile', {
+                    petId: item.id,
+                    usuario: this.usuario,
+                  })
+                }>
                 <Avatar
                   avatarStyle={{borderRadius: 10}}
                   size="large"
