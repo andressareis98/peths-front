@@ -18,7 +18,7 @@ export default props => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: commonStyles.colors.white,
   },
 });
