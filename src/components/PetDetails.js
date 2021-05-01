@@ -1,13 +1,12 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {Avatar} from 'react-native-elements';
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import commonStyles from '../commonStyles';
 
 export default ({pet}) => {
   return (
-    <View>
+    <View style={styles.container}>
       <Avatar
         avatarStyle={{borderRadius: 10}}
         size="large"
@@ -24,3 +23,9 @@ export default ({pet}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 10,
+  },
+});

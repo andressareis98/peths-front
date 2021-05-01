@@ -15,6 +15,7 @@ import 'moment/locale/pt-br';
 import moment from 'moment';
 
 import PetDetails from '../components/PetDetails';
+import ConsultationCard from '../components/ConsultationCard';
 import commonStyles from '../commonStyles';
 
 const initialState = {
@@ -54,7 +55,6 @@ export default class PetProfile extends Component {
   };
 
   render() {
-    console.warn(this.usuario);
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar />
@@ -84,10 +84,11 @@ export default class PetProfile extends Component {
             {this.state.tabStatus === 'consultas' && (
               <FlatList
                 data={this.state.consultations}
+                keyExtractor={item => `${item.id}`}
                 renderItem={({item}) => (
-                  <View>
-                    <Text>{item.diagnostico}</Text>
-                  </View>
+                  <TouchableOpacity>
+                    <ConsultationCard {...item} />
+                  </TouchableOpacity>
                 )}
               />
             )}
