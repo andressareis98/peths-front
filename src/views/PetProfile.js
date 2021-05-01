@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 import {server, showError} from '../common';
 import axios from 'axios';
-import 'moment/locale/pt-br';
-import moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import PetDetails from '../components/PetDetails';
 import ConsultationCard from '../components/ConsultationCard';
+import VaccineCard from '../components/VaccineCard';
 import commonStyles from '../commonStyles';
 
 const initialState = {
@@ -34,6 +34,7 @@ export default class PetProfile extends Component {
   componentDidMount = async () => {
     this.loadPet();
     this.loadConsultations();
+    this.loadVaccines();
   };
 
   loadPet = async () => {
@@ -49,6 +50,15 @@ export default class PetProfile extends Component {
     try {
       const res = await axios.get(`${server}/pets/${this.petId}/consultations`);
       this.setState({consultations: res.data});
+    } catch (e) {
+      showError(e);
+    }
+  };
+
+  loadVaccines = async () => {
+    try {
+      const res = await axios.get(`${server}/pets/${this.petId}/vaccines`);
+      this.setState({vaccines: res.data});
     } catch (e) {
       showError(e);
     }
@@ -92,6 +102,20 @@ export default class PetProfile extends Component {
                 )}
               />
             )}
+
+            {this.state.tabStatus === 'vacinas' && (
+              <View>
+                <FlatList
+                  data={this.state.vaccines}
+                  keyExtractor={item => `${item.id}`}
+                  renderItem={({item}) => (
+                    <TouchableOpacity>
+                      <VaccineCard {...item} />
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+            )}
           </View>
         </View>
       </SafeAreaView>
@@ -125,5 +149,16 @@ const styles = StyleSheet.create({
   },
   listTabContainer: {
     margin: 10,
+  },
+  addButton: {
+    position: 'absolute',
+    right: 30,
+    bottom: 30,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: commonStyles.colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
