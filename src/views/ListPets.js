@@ -60,6 +60,12 @@ export default class PetList extends Component {
     this.loadPets();
   };
 
+  usuario = {
+    nome: this.props.route.params.nome,
+    email: this.props.route.params.email,
+    crmv: this.props.route.params.crmv,
+  };
+
   render() {
     const year = moment().locale('pt-br').format('YYYY');
     return (
