@@ -131,7 +131,9 @@ export default class PetProfile extends Component {
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.addButton}
-            onPress={() => this.props.navigation.navigate(this.state.form)}>
+            onPress={() =>
+              this.props.navigation.navigate(this.state.form, this.state.pet)
+            }>
             <Icon name="plus" size={20} color={commonStyles.colors.secundary} />
           </TouchableOpacity>
         )}
