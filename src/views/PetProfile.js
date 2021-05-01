@@ -104,7 +104,13 @@ export default class PetProfile extends Component {
                 data={this.state.consultations}
                 keyExtractor={item => `${item.id}`}
                 renderItem={({item}) => (
-                  <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate(
+                        'ConsultationDetails',
+                        item,
+                      )
+                    }>
                     <ConsultationCard {...item} />
                   </TouchableOpacity>
                 )}
@@ -134,7 +140,7 @@ export default class PetProfile extends Component {
             onPress={() =>
               this.props.navigation.navigate(this.state.form, this.state.pet)
             }>
-            <Icon name="plus" size={20} color={commonStyles.colors.secundary} />
+            <Icon name="plus" size={20} color={commonStyles.colors.white} />
           </TouchableOpacity>
         )}
       </SafeAreaView>
@@ -176,7 +182,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: commonStyles.colors.white,
+    backgroundColor: commonStyles.colors.tertiary,
     alignItems: 'center',
     justifyContent: 'center',
   },

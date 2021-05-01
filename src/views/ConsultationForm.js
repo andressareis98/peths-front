@@ -81,7 +81,7 @@ export default ({route, navigation}) => {
     }
     return datePicker;
   };
-  console.warn(this.pet);
+
   return (
     <View>
       <PetDetails pet={pet} />
@@ -111,14 +111,6 @@ export default ({route, navigation}) => {
         placeholder="Informe a prescrição"
         value={consultation.prescricao}
       />
-
-      {/* <TouchableOpacity
-        onPress={() => {
-          this.saveConsultation(pet, consultation);
-          navigation.goBack();
-        }}>
-        <Text>Salvar</Text>
-      </TouchableOpacity> */}
 
       <TouchableOpacity
         onPress={() => {

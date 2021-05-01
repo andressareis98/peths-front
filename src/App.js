@@ -9,6 +9,7 @@ import PetList from './views/ListPets';
 import PetForm from './views/PetForm';
 import PetProfile from './views/PetProfile';
 import ConsultationForm from './views/ConsultationForm';
+import ConsultationDetails from './views/ConsultationDetails';
 import VaccineForm from './views/VaccineForm';
 import VeterinaryHome from './views/VeterinaryHome';
 
@@ -42,6 +43,11 @@ export default props => {
           name="ConsultationForm"
           options={{title: 'Cadastro de Consulta'}}
           component={ConsultationForm}
+        />
+        <Stack.Screen
+          name="ConsultationDetails"
+          options={{title: 'Detalhes sobre a consulta'}}
+          component={ConsultationDetails}
         />
         <Stack.Screen
           name="VaccineForm"
