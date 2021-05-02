@@ -17,12 +17,13 @@ import PetDetails from '../components/PetDetails';
 import ConsultationCard from '../components/ConsultationCard';
 import VaccineCard from '../components/VaccineCard';
 import commonStyles from '../commonStyles';
+import {Button} from 'react-native-elements/dist/buttons/Button';
 
 const initialState = {
   pet: [],
   consultations: [],
   vaccines: [],
-  tabStatus: 'consultas',
+  tabStatus: 'vacinas',
   form: 'ConsultationForm',
 };
 
@@ -69,75 +70,67 @@ export default class PetProfile extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar />
-        <View>
-          <PetDetails pet={this.state.pet} />
 
-          <View style={styles.tabContainer}>
-            <TouchableOpacity
-              onPress={() =>
-                this.setState({
-                  tabStatus: 'consultas',
-                  form: 'ConsultationForm',
-                })
-              }
-              style={[
-                styles.tab,
-                this.state.tabStatus === 'consultas' && styles.btnTabActive,
-              ]}>
-              <Text>Consultas</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                this.setState({tabStatus: 'vacinas', form: 'VaccineForm'})
-              }
-              style={[
-                styles.tab,
-                this.state.tabStatus === 'vacinas' && styles.btnTabActive,
-              ]}>
-              <Text>Vacinas</Text>
-            </TouchableOpacity>
-          </View>
+        <PetDetails pet={this.state.pet} />
 
-          <View style={styles.listTabContainer}>
-            {this.state.tabStatus === 'consultas' && (
-              <FlatList
-                data={this.state.consultations}
-                keyExtractor={item => `${item.id}`}
-                renderItem={({item}) => (
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate(
-                        'ConsultationDetails',
-                        item,
-                      )
-                    }>
-                    <ConsultationCard {...item} />
-                  </TouchableOpacity>
-                )}
-              />
-            )}
-
-            {this.state.tabStatus === 'vacinas' && (
-              <View>
-                <FlatList
-                  data={this.state.vaccines}
-                  keyExtractor={item => `${item.id}`}
-                  renderItem={({item}) => (
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.props.navigation.navigate('VaccineDetails', {
-                          usuario: this.usuario,
-                          item,
-                        })
-                      }>
-                      <VaccineCard {...item} />
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
-          </View>
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            onPress={() =>
+              this.setState({
+                tabStatus: 'consultas',
+                form: 'ConsultationForm',
+              })
+            }
+            style={[
+              styles.tab,
+              this.state.tabStatus === 'consultas' && styles.btnTabActive,
+            ]}>
+            <Text>Consultas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              this.setState({tabStatus: 'vacinas', form: 'VaccineForm'})
+            }
+            style={[
+              styles.tab,
+              this.state.tabStatus === 'vacinas' && styles.btnTabActive,
+            ]}>
+            <Text>Vacinas</Text>
+          </TouchableOpacity>
         </View>
+
+        {this.state.tabStatus === 'consultas' && (
+          <FlatList
+            data={this.state.consultations}
+            keyExtractor={item => `${item.id}`}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate('ConsultationDetails', item)
+                }>
+                <ConsultationCard {...item} />
+              </TouchableOpacity>
+            )}
+          />
+        )}
+
+        {this.state.tabStatus === 'vacinas' && (
+          <FlatList
+            data={this.state.vaccines}
+            keyExtractor={item => `${item.id}`}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate('VaccineDetails', {
+                    usuario: this.usuario,
+                    item,
+                  })
+                }>
+                <VaccineCard {...item} />
+              </TouchableOpacity>
+            )}
+          />
+        )}
 
         {this.usuario.crmv.trim() <= 0 && (
           <TouchableOpacity
