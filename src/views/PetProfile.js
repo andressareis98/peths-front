@@ -123,7 +123,13 @@ export default class PetProfile extends Component {
                   data={this.state.vaccines}
                   keyExtractor={item => `${item.id}`}
                   renderItem={({item}) => (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate('VaccineDetails', {
+                          usuario: this.usuario,
+                          item,
+                        })
+                      }>
                       <VaccineCard {...item} />
                     </TouchableOpacity>
                   )}

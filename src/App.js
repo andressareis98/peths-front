@@ -11,6 +11,7 @@ import PetProfile from './views/PetProfile';
 import ConsultationForm from './views/ConsultationForm';
 import ConsultationDetails from './views/ConsultationDetails';
 import VaccineForm from './views/VaccineForm';
+import VaccineDetails from './views/VaccineDetails';
 import VeterinaryHome from './views/VeterinaryHome';
 
 const Stack = createStackNavigator();
@@ -53,6 +54,11 @@ export default props => {
           name="VaccineForm"
           options={{title: 'Cadastro de Vacina'}}
           component={VaccineForm}
+        />
+        <Stack.Screen
+          name="VaccineDetails"
+          options={{title: 'Detalhes sobre a Vacina'}}
+          component={VaccineDetails}
         />
         <Stack.Screen
           name="VeterinaryHome"
