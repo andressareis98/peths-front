@@ -132,7 +132,7 @@ export default class PetProfile extends Component {
           />
         )}
 
-        {this.usuario.crmv.trim() <= 0 && (
+        {this.usuario.crmv.trim() > 0 && (
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.addButton}

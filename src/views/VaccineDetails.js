@@ -41,7 +41,7 @@ export default ({route, navigation}) => {
       <Text>Status</Text>
       <Text>{item.status}</Text>
 
-      {item.status !== 'Concluido' && usuario.crmv.trim() <= 0 && (
+      {item.status !== 'Concluido' && usuario.crmv.trim() > 0 && (
         <View>
           <CheckBox
             title='Trocar status para "Concluído"'
