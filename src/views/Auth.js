@@ -137,6 +137,7 @@ export default class Auth extends Component {
           <AuthInput
             icon="at"
             placeholder="E-mail"
+            keyboardType="email-address"
             value={this.state.email}
             onChangeText={email => this.setState({email})}
           />
