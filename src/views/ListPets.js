@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Avatar} from 'react-native-elements';
 import {
   View,
@@ -18,33 +18,31 @@ import 'moment/locale/pt-br';
 
 import commonStyles from '../commonStyles';
 
-const initialState = {
-  pets: [],
-  refreshing: false,
-};
+export default ({route, navigation}) => {
+  const [pet, setPet] = useState({
+    pets: [],
+    refreshing: false,
+  });
 
-export default class PetList extends Component {
-  state = {...initialState};
-
-  componentDidMount = async () => {
+  useEffect(() => {
     this.loadPets();
-  };
+  });
 
   loadPets = async () => {
     try {
       const res = await axios.get(`${server}/pets`);
-      this.setState({pets: res.data});
+      setPet({pets: res.data});
     } catch (e) {
       showError(e);
     }
   };
 
-  confirmPetDeletion(pet) {
+  confirmPetDeletion = pet => {
     return Alert.alert('Excluir', `Deseja excluir o pet ${pet.nome}?`, {
       text: 'Sim',
       onPress: () => this.deleteTask(pet),
     });
-  }
+  };
 
   deletePet = async id => {
     try {
@@ -56,87 +54,83 @@ export default class PetList extends Component {
   };
 
   onRefresh = () => {
-    this.setState({refreshing: false});
-    this.loadPets();
+    setPet({refreshing: false});
+    loadPets();
   };
 
   usuario = {
-    nome: this.props.route.params.nome,
-    email: this.props.route.params.email,
-    crmv: this.props.route.params.crmv,
+    nome: route.params.nome,
+    email: route.params.email,
+    crmv: route.params.crmv,
   };
 
-  render() {
-    const year = moment().locale('pt-br').format('YYYY');
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar />
-        <Text numberOfLines={2} style={styles.headerTitle}>
-          Encontre o seu pet
-        </Text>
+  const year = moment().locale('pt-br').format('YYYY');
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar />
+      <Text numberOfLines={2} style={styles.headerTitle}>
+        Encontre o seu pet
+      </Text>
 
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.onRefresh}></RefreshControl>
-          }
-          style={styles.listArea}
-          data={this.state.pets}
-          renderItem={({item}) => (
-            <View style={styles.petItem}>
-              <TouchableOpacity
-                style={styles.seeProfile}
-                onPress={() =>
-                  this.props.navigation.navigate('PetProfile', {
-                    petId: item.id,
-                    usuario: this.usuario,
-                  })
-                }>
-                <Avatar
-                  avatarStyle={{borderRadius: 10}}
-                  size="large"
-                  source={{uri: item.avatarUrl}}
-                />
-                <View>
-                  <View style={styles.dataPetItem}>
-                    <Text style={styles.textBoldPetItem}>Nome: </Text>
-                    <Text style={styles.textPetItem}>{item.nome}</Text>
-                  </View>
-                  <View style={styles.dataPetItem}>
-                    <Text style={styles.textBoldPetItem}>Idade: </Text>
-                    <Text style={styles.textPetItem}>
-                      {year - moment(item.anoNascimento).format('YYYY')}
-                    </Text>
-                  </View>
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={pet.refreshing}
+            onRefresh={this.onRefresh}></RefreshControl>
+        }
+        style={styles.listArea}
+        data={pet.pets}
+        renderItem={({item}) => (
+          <View style={styles.petItem}>
+            <TouchableOpacity
+              style={styles.seeProfile}
+              onPress={() =>
+                navigation.navigate('PetProfile', {
+                  petId: item.id,
+                  usuario: this.usuario,
+                })
+              }>
+              <Avatar
+                avatarStyle={{borderRadius: 10}}
+                size="large"
+                source={{uri: item.avatarUrl}}
+              />
+              <View>
+                <View style={styles.dataPetItem}>
+                  <Text style={styles.textBoldPetItem}>Nome: </Text>
+                  <Text style={styles.textPetItem}>{item.nome}</Text>
                 </View>
-              </TouchableOpacity>
-
-              <View style={styles.buttons}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('PetForm', item)
-                  }>
-                  <Icon style={styles.editButton} size={35} name="pencil" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.deletePet(item.id)}>
-                  <Icon style={styles.deleteButton} size={35} name="trash" />
-                </TouchableOpacity>
+                <View style={styles.dataPetItem}>
+                  <Text style={styles.textBoldPetItem}>Idade: </Text>
+                  <Text style={styles.textPetItem}>
+                    {year - moment(item.anoNascimento).format('YYYY')}
+                  </Text>
+                </View>
               </View>
-            </View>
-          )}
-        />
+            </TouchableOpacity>
 
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.addButton}
-          onPress={() => this.props.navigation.navigate('PetForm')}>
-          <Icon name="plus" size={20} color={commonStyles.colors.secundary} />
-        </TouchableOpacity>
-      </SafeAreaView>
-    );
-  }
-}
+            <View style={styles.buttons}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('PetForm', item)}>
+                <Icon style={styles.editButton} size={35} name="pencil" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.deletePet(item.id)}>
+                <Icon style={styles.deleteButton} size={35} name="trash" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      />
+
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.addButton}
+        onPress={() => navigation.navigate('PetForm')}>
+        <Icon name="plus" size={20} color={commonStyles.colors.secundary} />
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
