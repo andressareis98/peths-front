@@ -1,12 +1,20 @@
 import axios from 'axios';
 import React, {useState} from 'react';
-import {View, Text, TextInput, Platform, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Platform,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import {CheckBox} from 'react-native-elements';
 
 import {server, showError, showSuccess} from '../common';
 import PetDetails from '../components/PetDetails';
+import commonStyles from '../commonStyles';
 
 export default ({route, navigation}) => {
   const [vaccine, setVaccine] = useState({
@@ -30,8 +38,6 @@ export default ({route, navigation}) => {
       showError(e);
     }
   };
-
-  console.warn(pet);
 
   getDatePicker = () => {
     let datePicker = (
@@ -65,47 +71,94 @@ export default ({route, navigation}) => {
   return (
     <View style={{flex: 1}}>
       <PetDetails pet={pet} />
-      <Text>Ação: </Text>
-      <View style={{flexDirection: 'row'}}>
-        <CheckBox
-          center
-          title="Aplicar Vacina"
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          checked={vaccine.isApplyVaccine}
-          onPress={() =>
-            setVaccine({...vaccine, isApplyVaccine: true, status: 'Concluído'})
-          }
+      <View style={styles.container}>
+        <Text>Ação: </Text>
+        <View style={{flexDirection: 'row'}}>
+          <CheckBox
+            center
+            title="Aplicar Vacina"
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            checked={vaccine.isApplyVaccine}
+            onPress={() =>
+              setVaccine({
+                ...vaccine,
+                isApplyVaccine: true,
+                status: 'Concluído',
+              })
+            }
+          />
+          <CheckBox
+            center
+            title="Agendar Vacina"
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            checked={!vaccine.isApplyVaccine}
+            onPress={() =>
+              setVaccine({
+                ...vaccine,
+                isApplyVaccine: false,
+                status: 'Pendente',
+              })
+            }
+          />
+        </View>
+
+        {!vaccine.isApplyVaccine && <Text style={styles.titulo}>Data:</Text>}
+        {!vaccine.isApplyVaccine && this.getDatePicker()}
+
+        <Text style={styles.titulo}>Vacina</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={nome => setVaccine({...vaccine, nome})}
+          placeholder="Informe o nome"
+          value={vaccine.nome}
         />
-        <CheckBox
-          center
-          title="Agendar Vacina"
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          checked={!vaccine.isApplyVaccine}
-          onPress={() =>
-            setVaccine({...vaccine, isApplyVaccine: false, status: 'Pendente'})
-          }
-        />
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            this.addVaccine(vaccine);
+            navigation.goBack();
+          }}>
+          <Text style={styles.textButton}>Salvar</Text>
+        </TouchableOpacity>
       </View>
-
-      {!vaccine.isApplyVaccine && <Text>Data:</Text>}
-      {!vaccine.isApplyVaccine && this.getDatePicker()}
-
-      <Text>Vacina</Text>
-      <TextInput
-        onChangeText={nome => setVaccine({...vaccine, nome})}
-        placeholder="Informe o nome"
-        value={vaccine.nome}
-      />
-
-      <TouchableOpacity
-        onPress={() => {
-          this.addVaccine(vaccine);
-          navigation.goBack();
-        }}>
-        <Text>Salvar</Text>
-      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 10,
+  },
+  formContainer: {
+    flexDirection: 'column',
+    marginBottom: 10,
+  },
+  titulo: {
+    color: commonStyles.colors.secundary,
+    fontWeight: 'bold',
+    marginRight: 10,
+    fontSize: 15,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: commonStyles.colors.primary,
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: commonStyles.colors.primary,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    padding: 10,
+  },
+  textButton: {
+    color: commonStyles.colors.white,
+    fontSize: 15,
+  },
+});

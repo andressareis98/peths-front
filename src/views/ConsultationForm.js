@@ -1,11 +1,19 @@
 import axios from 'axios';
 import React, {useState} from 'react';
-import {View, Text, TextInput, Platform, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Platform,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
 import {server, showError, showSuccess} from '../common';
 import PetDetails from '../components/PetDetails';
+import commonStyles from '../commonStyles';
 
 export default ({route, navigation}) => {
   const [consultation, setConsultation] = useState({
@@ -85,40 +93,88 @@ export default ({route, navigation}) => {
   return (
     <View>
       <PetDetails pet={pet} />
-      <Text>Data: </Text>
-      {this.getDatePicker()}
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
+          <Text style={styles.titulo}>Data: </Text>
+          {this.getDatePicker()}
+        </View>
 
-      <Text>Peso</Text>
-      <TextInput
-        onChangeText={peso => setConsultation({...consultation, peso})}
-        placeholder="Informe o peso do pet"
-        value={consultation.peso}
-      />
-      <Text>Dignostico</Text>
-      <TextInput
-        onChangeText={diagnostico =>
-          setConsultation({...consultation, diagnostico})
-        }
-        placeholder="Informe o diagnostico"
-        value={consultation.diagnostico}
-      />
+        <View style={styles.formContainer}>
+          <Text style={styles.titulo}>Peso: </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={peso => setConsultation({...consultation, peso})}
+            placeholder="Informe o peso do pet"
+            value={consultation.peso}
+          />
+        </View>
 
-      <Text>Precrição</Text>
-      <TextInput
-        onChangeText={prescricao =>
-          setConsultation({...consultation, prescricao})
-        }
-        placeholder="Informe a prescrição"
-        value={consultation.prescricao}
-      />
+        <View style={styles.formContainer}>
+          <Text style={styles.titulo}>Dignostico: </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={diagnostico =>
+              setConsultation({...consultation, diagnostico})
+            }
+            placeholder="Informe o diagnostico"
+            value={consultation.diagnostico}
+          />
+        </View>
 
-      <TouchableOpacity
-        onPress={() => {
-          this.saveConsultation(consultation);
-          navigation.goBack();
-        }}>
-        <Text>Salvar</Text>
-      </TouchableOpacity>
+        <View style={styles.formContainer}>
+          <Text style={styles.titulo}>Precrição: </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={prescricao =>
+              setConsultation({...consultation, prescricao})
+            }
+            placeholder="Informe a prescrição"
+            value={consultation.prescricao}
+          />
+        </View>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            this.saveConsultation(consultation);
+            navigation.goBack();
+          }}>
+          <Text style={styles.textButton}>Salvar</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 10,
+  },
+  formContainer: {
+    flexDirection: 'column',
+    marginBottom: 10,
+  },
+  titulo: {
+    color: commonStyles.colors.secundary,
+    fontWeight: 'bold',
+    marginRight: 10,
+    fontSize: 15,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: commonStyles.colors.primary,
+  },
+  button: {
+    backgroundColor: commonStyles.colors.primary,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    padding: 10,
+  },
+  textButton: {
+    color: commonStyles.colors.white,
+    fontSize: 15,
+  },
+});

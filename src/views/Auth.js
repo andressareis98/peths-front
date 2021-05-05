@@ -18,11 +18,11 @@ import commonStyles from '../commonStyles';
 import AuthInput from '../components/AuthInput';
 
 const initialState = {
-  nome: 'Testando',
+  nome: '',
   crmv: '',
   email: 'teste1@teste.com',
   senha: '1234567',
-  confirmarSenha: '1234567',
+  confirmarSenha: '',
   isVeterenarySelected: false,
   stageNew: false,
 };
@@ -158,7 +158,9 @@ export default class Auth extends Component {
           )}
 
           <TouchableOpacity
-            style={styles.customButton}
+            style={[
+              validForm ? styles.customButton : styles.disabledCustomButton,
+            ]}
             onPress={this.signinOrSignup}
             disabled={!validForm}>
             <Text style={styles.customButtonText}>
@@ -199,6 +201,14 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  disabledCustomButton: {
+    height: 50,
+    backgroundColor: commonStyles.colors.secundary,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.5,
   },
   customButtonText: {
     fontSize: commonStyles.sizes.buttonText,

@@ -23,7 +23,7 @@ const initialState = {
   pet: [],
   consultations: [],
   vaccines: [],
-  tabStatus: 'vacinas',
+  tabStatus: 'consultas',
   form: 'ConsultationForm',
 };
 

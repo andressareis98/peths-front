@@ -17,7 +17,6 @@ export default ({route, navigation}) => {
 
   usuario = route.params.usuario;
   item = route.params.item;
-  console.warn(item.id);
 
   editStatusVaccine = async vaccine => {
     try {
