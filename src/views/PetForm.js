@@ -80,7 +80,7 @@ export default ({route, navigation}) => {
       />
     );
 
-    const dateString = moment(pet.anoNascimento).format('DD-MM-YYYY');
+    const dateString = moment(pet.anoNascimento).format('DD/MM/YYYY');
 
     if (Platform.OS === 'android') {
       datePicker = (
