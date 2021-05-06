@@ -15,6 +15,7 @@ import {server, showError} from '../common';
 import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/pt-br';
+import PetAge from '../components/PetAge';
 
 import commonStyles from '../commonStyles';
 
@@ -64,7 +65,7 @@ export default ({route, navigation}) => {
     crmv: route.params.crmv,
   };
 
-  const year = moment().locale('pt-br').format('YYYY');
+  const year = moment().locale('pt-br').format('DD/MM/YYYY');
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
@@ -103,7 +104,8 @@ export default ({route, navigation}) => {
                 <View style={styles.dataPetItem}>
                   <Text style={styles.textBoldPetItem}>Idade: </Text>
                   <Text style={styles.textPetItem}>
-                    {year - moment(item.anoNascimento).format('YYYY')}
+                    {/* {moment().diff(moment(item.anoNascimento), 'years')} */}
+                    <PetAge anoNascimento={item.anoNascimento} />
                   </Text>
                 </View>
               </View>

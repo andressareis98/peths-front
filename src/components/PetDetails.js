@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Avatar} from 'react-native-elements';
-import moment from 'moment';
 import commonStyles from '../commonStyles';
+
+import PetAge from '../components/PetAge';
 
 export default ({pet}) => {
   return (
@@ -26,8 +27,7 @@ export default ({pet}) => {
         <View style={styles.containerData}>
           <Text style={styles.title}>Idade: </Text>
           <Text>
-            {moment(new Date()).format('YYYY') -
-              moment(pet.anoNascimento).format('YYYY')}
+            <PetAge anoNascimento={pet.anoNascimento} />
           </Text>
         </View>
 
