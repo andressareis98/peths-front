@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import {
   View,
+  SafeAreaView,
+  StatusBar,
   Text,
   TextInput,
   Platform,
@@ -69,7 +71,8 @@ export default ({route, navigation}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar />
       <PetDetails pet={pet} />
       <View style={styles.container}>
         <Text>Ação: </Text>
@@ -124,7 +127,7 @@ export default ({route, navigation}) => {
           <Text style={styles.textButton}>Salvar</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import {
   Platform,
+  SafeAreaView,
+  StatusBar,
   View,
   Text,
   TextInput,
@@ -100,7 +102,8 @@ export default ({route, navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar />
       <View style={styles.formContainer}>
         <View style={styles.avatar}>
           <Avatar rounded size="large" source={{uri: pet.avatarUrl}} />
@@ -166,7 +169,7 @@ export default ({route, navigation}) => {
           )}
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

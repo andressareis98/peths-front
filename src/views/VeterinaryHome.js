@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {
   View,
+  SafeAreaView,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -15,7 +17,8 @@ export default ({navigation, route}) => {
   const [pet, setPet] = useState({petId: ''});
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar />
       <Text>Informe o Id do pet: </Text>
       <TextInput
         style={styles.input}
@@ -33,7 +36,7 @@ export default ({navigation, route}) => {
         }>
         <Text style={styles.textButton}>Iniciar atendimento</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
