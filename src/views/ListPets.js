@@ -8,13 +8,11 @@ import {
   SafeAreaView,
   StatusBar,
   FlatList,
-  RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {server, showError} from '../common';
 import axios from 'axios';
-import moment from 'moment';
-import 'moment/locale/pt-br';
+
 import PetAge from '../components/PetAge';
 
 import commonStyles from '../commonStyles';
@@ -22,7 +20,6 @@ import commonStyles from '../commonStyles';
 export default ({route, navigation}) => {
   const [pet, setPet] = useState({
     pets: [],
-    refreshing: false,
   });
 
   useEffect(() => {
@@ -54,18 +51,12 @@ export default ({route, navigation}) => {
     }
   };
 
-  onRefresh = () => {
-    setPet({refreshing: false});
-    loadPets();
-  };
-
   usuario = {
     nome: route.params.nome,
     email: route.params.email,
     crmv: route.params.crmv,
   };
 
-  const year = moment().locale('pt-br').format('DD/MM/YYYY');
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
@@ -74,11 +65,6 @@ export default ({route, navigation}) => {
       </Text>
 
       <FlatList
-        refreshControl={
-          <RefreshControl
-            refreshing={pet.refreshing}
-            onRefresh={this.onRefresh}></RefreshControl>
-        }
         style={styles.listArea}
         data={pet.pets}
         renderItem={({item}) => (
@@ -104,7 +90,6 @@ export default ({route, navigation}) => {
                 <View style={styles.dataPetItem}>
                   <Text style={styles.textBoldPetItem}>Idade: </Text>
                   <Text style={styles.textPetItem}>
-                    {/* {moment().diff(moment(item.anoNascimento), 'years')} */}
                     <PetAge anoNascimento={item.anoNascimento} />
                   </Text>
                 </View>
