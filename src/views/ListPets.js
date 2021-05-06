@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar} from 'react-native-elements';
 import {
+  Alert,
   View,
   Text,
   StyleSheet,
@@ -36,10 +37,13 @@ export default ({route, navigation}) => {
   };
 
   confirmPetDeletion = pet => {
-    return Alert.alert('Excluir', `Deseja excluir o pet ${pet.nome}?`, {
-      text: 'Sim',
-      onPress: () => this.deleteTask(pet),
-    });
+    Alert.alert('Excluir Pet', `Deseja excluir o pet ${pet.nome}?`, [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      {text: 'Deletar pet', onPress: () => this.deletePet(pet.id)},
+    ]);
   };
 
   deletePet = async id => {
@@ -101,7 +105,7 @@ export default ({route, navigation}) => {
                 onPress={() => navigation.navigate('PetForm', item)}>
                 <Icon style={styles.editButton} size={35} name="pencil" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.deletePet(item.id)}>
+              <TouchableOpacity onPress={() => this.confirmPetDeletion(item)}>
                 <Icon style={styles.deleteButton} size={35} name="trash" />
               </TouchableOpacity>
             </View>
