@@ -6,13 +6,12 @@ import {
   StatusBar,
   View,
   Text,
-  TextInput,
   StyleSheet,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 
 import {Avatar} from 'react-native-elements';
+import {CheckBox} from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
@@ -65,7 +64,7 @@ export default ({route, navigation}) => {
           nome: '',
           anoNascimento: new Date(),
           peso: '',
-          sexo: '',
+          sexo: 'Fêmea',
           observações: '',
           showDatePicker: false,
         },
@@ -132,12 +131,41 @@ export default ({route, navigation}) => {
             value={pet.peso}
           />
 
-          <FormPetInput
-            icon="venus-mars"
-            onChangeText={sexo => setPet({...pet, sexo})}
-            placeholder="Informe o sexo"
-            value={pet.sexo}
-          />
+          <View style={styles.containerCheckboxAndTitle}>
+            <View style={styles.containerCheckboxText}>
+              <Icon name="venus-mars" size={20} style={styles.icon} />
+              <Text style={styles.titleCheckbox}>Sexo: </Text>
+            </View>
+            <View style={styles.containerCheckbox}>
+              <TouchableOpacity
+                style={styles.checkbox}
+                onPress={() => setPet({...pet, sexo: 'Fêmea'})}>
+                <CheckBox
+                  center
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={pet.sexo === 'Fêmea'}
+                  checkedColor={commonStyles.colors.secundary}
+                  onPress={() => setPet({...pet, sexo: 'Fêmea'})}
+                />
+                <Text style={styles.legendCheckbox}>Fêmea</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.checkbox}
+                onPress={() => setPet({...pet, sexo: 'Macho'})}>
+                <CheckBox
+                  center
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={pet.sexo === 'Macho'}
+                  checkedColor={commonStyles.colors.secundary}
+                  onPress={() => setPet({...pet, sexo: 'Macho'})}
+                />
+                <Text style={styles.legendCheckbox}>Macho</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
           <FormPetInput
             icon="plus"
@@ -223,5 +251,34 @@ const styles = StyleSheet.create({
   customButtonText: {
     fontSize: 15,
     color: commonStyles.colors.white,
+  },
+  containerCheckboxAndTitle: {
+    backgroundColor: '#fbfbfb',
+    padding: 15,
+    marginTop: 15,
+    borderRadius: 5,
+  },
+  containerCheckboxText: {
+    flexDirection: 'row',
+  },
+  containerCheckbox: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+  },
+  titleCheckbox: {
+    color: commonStyles.colors.secundary,
+    fontWeight: 'bold',
+  },
+  icon: {
+    color: commonStyles.colors.secundary,
+    marginRight: 15,
+  },
+  legendCheckbox: {
+    color: commonStyles.colors.grayDark,
+  },
+  checkbox: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
