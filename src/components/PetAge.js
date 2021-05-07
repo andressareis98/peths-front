@@ -21,7 +21,6 @@ export default ({anoNascimento}) => {
       {anos === 0 && meses === 0 && dias === 0 && <Text>{dias} dias</Text>}
       {anos === 0 && meses === 0 && dias > 1 && <Text>{dias} dias</Text>}
       {anos === 0 && meses === 0 && dias === 1 && <Text>{dias} dia</Text>}
-      {anos === 0 && meses === 0 && dias > 1 && <Text>{dias} dias</Text>}
     </>
   );
 };

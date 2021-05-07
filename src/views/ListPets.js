@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {Avatar} from 'react-native-elements';
 import {
   Alert,
@@ -10,6 +10,7 @@ import {
   StatusBar,
   FlatList,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {server, showError} from '../common';
 import axios from 'axios';
@@ -23,11 +24,14 @@ export default ({route, navigation}) => {
     pets: [],
   });
 
-  useEffect(() => {
-    this.loadPets();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadPets();
+      return () => loadPets();
+    }, []),
+  );
 
-  loadPets = async () => {
+  const loadPets = async () => {
     try {
       const res = await axios.get(`${server}/pets`);
       setPet({pets: res.data});
@@ -36,20 +40,20 @@ export default ({route, navigation}) => {
     }
   };
 
-  confirmPetDeletion = pet => {
+  const confirmPetDeletion = pet => {
     Alert.alert('Excluir Pet', `Deseja excluir o pet ${pet.nome}?`, [
       {
         text: 'Cancelar',
         style: 'cancel',
       },
-      {text: 'Deletar pet', onPress: () => this.deletePet(pet.id)},
+      {text: 'Deletar pet', onPress: () => deletePet(pet.id)},
     ]);
   };
 
-  deletePet = async id => {
+  const deletePet = async id => {
     try {
       await axios.delete(`${server}/pets/${id}`);
-      await this.loadPets();
+      await loadPets();
     } catch (e) {
       showError(e);
     }
@@ -105,7 +109,7 @@ export default ({route, navigation}) => {
                 onPress={() => navigation.navigate('PetForm', item)}>
                 <Icon style={styles.editButton} size={35} name="pencil" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.confirmPetDeletion(item)}>
+              <TouchableOpacity onPress={() => confirmPetDeletion(item)}>
                 <Icon style={styles.deleteButton} size={35} name="trash" />
               </TouchableOpacity>
             </View>
