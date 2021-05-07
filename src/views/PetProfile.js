@@ -30,8 +30,6 @@ export default ({route, navigation}) => {
     form: 'ConsultationForm',
   });
 
-  console.log({petProfile});
-
   useFocusEffect(
     useCallback(() => {
       loadProfile();
