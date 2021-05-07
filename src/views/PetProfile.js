@@ -18,8 +18,6 @@ import PetDetails from '../components/PetDetails';
 import ConsultationCard from '../components/ConsultationCard';
 import VaccineCard from '../components/VaccineCard';
 import commonStyles from '../commonStyles';
-import {Button} from 'react-native-elements/dist/buttons/Button';
-import {Profiler} from 'react';
 
 export default ({route, navigation}) => {
   const [petProfile, setPetProfile] = useState({
@@ -117,7 +115,7 @@ export default ({route, navigation}) => {
 
       {petProfile.tabStatus === 'consultas' && (
         <FlatList
-          data={petProfile.consultations}
+          data={petProfile.consultations.sort((a, b) => b.data > a.data)}
           keyExtractor={item => `${item.id}`}
           renderItem={({item}) => (
             <TouchableOpacity
@@ -130,7 +128,7 @@ export default ({route, navigation}) => {
 
       {petProfile.tabStatus === 'vacinas' && (
         <FlatList
-          data={petProfile.vaccines}
+          data={petProfile.vaccines.sort((a, b) => b.data > a.data)}
           keyExtractor={item => `${item.id}`}
           renderItem={({item}) => (
             <TouchableOpacity
