@@ -126,6 +126,7 @@ export default ({route, navigation}) => {
 
           <FormPetInput
             icon="weight"
+            keyboardType="decimal-pad"
             onChangeText={peso => setPet({...pet, peso})}
             placeholder="Informe o peso"
             value={pet.peso}
