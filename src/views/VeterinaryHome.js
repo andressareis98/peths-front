@@ -13,6 +13,7 @@ import commonStyles from '../commonStyles';
 
 export default ({navigation, route}) => {
   usuario = route.params;
+  console.log(usuario);
 
   const [pet, setPet] = useState({petId: ''});
 

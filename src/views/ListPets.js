@@ -25,7 +25,7 @@ export default ({route, navigation}) => {
 
   useEffect(() => {
     this.loadPets();
-  });
+  }, []);
 
   loadPets = async () => {
     try {

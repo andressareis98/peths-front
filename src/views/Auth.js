@@ -20,8 +20,8 @@ import AuthInput from '../components/AuthInput';
 const initialState = {
   nome: '',
   crmv: '',
-  email: 'teste1@teste.com',
-  senha: '1234567',
+  email: 'testeveterinario@gmail.com',
+  senha: 'teste123',
   confirmarSenha: '',
   isVeterenarySelected: false,
   stageNew: false,

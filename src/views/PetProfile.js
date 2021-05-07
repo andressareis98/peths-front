@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {server, showError} from '../common';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -18,134 +19,144 @@ import ConsultationCard from '../components/ConsultationCard';
 import VaccineCard from '../components/VaccineCard';
 import commonStyles from '../commonStyles';
 import {Button} from 'react-native-elements/dist/buttons/Button';
+import {Profiler} from 'react';
 
-const initialState = {
-  pet: [],
-  consultations: [],
-  vaccines: [],
-  tabStatus: 'consultas',
-  form: 'ConsultationForm',
+export default ({route, navigation}) => {
+  const [petProfile, setPetProfile] = useState({
+    petId: route.params.petId,
+    usuario: route.params.usuario,
+    pet: [],
+    consultations: [],
+    vaccines: [],
+    tabStatus: 'consultas',
+    form: 'ConsultationForm',
+  });
+
+  console.log({petProfile});
+
+  useFocusEffect(
+    useCallback(() => {
+      loadProfile();
+      return () => loadProfile();
+    }, []),
+  );
+
+  const loadProfile = async () => {
+    await loadPet();
+    await loadConsultations();
+    await loadVaccines();
+  };
+
+  const loadPet = async () => {
+    try {
+      const res = await axios.get(`${server}/pets/${petProfile.petId}`);
+      setPetProfile(prev => ({...prev, pet: res.data[0]}));
+    } catch (e) {
+      showError(e);
+    }
+  };
+
+  const loadConsultations = async () => {
+    try {
+      const res = await axios.get(
+        `${server}/pets/${petProfile.petId}/consultations`,
+      );
+      setPetProfile(prev => ({...prev, consultations: res.data}));
+    } catch (e) {
+      showError(e);
+    }
+  };
+
+  const loadVaccines = async () => {
+    try {
+      const res = await axios.get(
+        `${server}/pets/${petProfile.petId}/vaccines`,
+      );
+      setPetProfile(prev => ({...prev, vaccines: res.data}));
+    } catch (e) {
+      showError(e);
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar />
+
+      <PetDetails pet={petProfile.pet} />
+
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          onPress={() =>
+            setPetProfile(prev => ({
+              ...prev,
+              tabStatus: 'consultas',
+              form: 'ConsultationForm',
+            }))
+          }
+          style={[
+            styles.tab,
+            petProfile.tabStatus === 'consultas' && styles.btnTabActive,
+          ]}>
+          <Text>Consultas</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            setPetProfile(prev => ({
+              ...prev,
+              tabStatus: 'vacinas',
+              form: 'VaccineForm',
+            }))
+          }
+          style={[
+            styles.tab,
+            petProfile.tabStatus === 'vacinas' && styles.btnTabActive,
+          ]}>
+          <Text>Vacinas</Text>
+        </TouchableOpacity>
+      </View>
+
+      {petProfile.tabStatus === 'consultas' && (
+        <FlatList
+          data={petProfile.consultations}
+          keyExtractor={item => `${item.id}`}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ConsultationDetails', item)}>
+              <ConsultationCard {...item} />
+            </TouchableOpacity>
+          )}
+        />
+      )}
+
+      {petProfile.tabStatus === 'vacinas' && (
+        <FlatList
+          data={petProfile.vaccines}
+          keyExtractor={item => `${item.id}`}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('VaccineDetails', {
+                  usuario: petProfile.usuario,
+                  item,
+                })
+              }>
+              <VaccineCard {...item} />
+            </TouchableOpacity>
+          )}
+        />
+      )}
+
+      {petProfile?.usuario?.crmv.trim() > 0 && (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.addButton}
+          onPress={() => navigation.navigate(petProfile.form, petProfile.pet)}>
+          <Icon name="plus" size={20} color={commonStyles.colors.white} />
+        </TouchableOpacity>
+      )}
+    </SafeAreaView>
+  );
 };
-
-export default class PetProfile extends Component {
-  petId = this.props.route.params.petId;
-  usuario = this.props.route.params.usuario;
-
-  state = {...initialState};
-
-  componentDidMount = async () => {
-    this.loadPet();
-    this.loadConsultations();
-    this.loadVaccines();
-  };
-
-  loadPet = async () => {
-    try {
-      const res = await axios.get(`${server}/pets/${this.petId}`);
-      this.setState({pet: res.data[0]});
-    } catch (e) {
-      showError(e);
-    }
-  };
-
-  loadConsultations = async () => {
-    try {
-      const res = await axios.get(`${server}/pets/${this.petId}/consultations`);
-      this.setState({consultations: res.data});
-    } catch (e) {
-      showError(e);
-    }
-  };
-
-  loadVaccines = async () => {
-    try {
-      const res = await axios.get(`${server}/pets/${this.petId}/vaccines`);
-      this.setState({vaccines: res.data});
-    } catch (e) {
-      showError(e);
-    }
-  };
-
-  render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar />
-
-        <PetDetails pet={this.state.pet} />
-
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              this.setState({
-                tabStatus: 'consultas',
-                form: 'ConsultationForm',
-              })
-            }
-            style={[
-              styles.tab,
-              this.state.tabStatus === 'consultas' && styles.btnTabActive,
-            ]}>
-            <Text>Consultas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              this.setState({tabStatus: 'vacinas', form: 'VaccineForm'})
-            }
-            style={[
-              styles.tab,
-              this.state.tabStatus === 'vacinas' && styles.btnTabActive,
-            ]}>
-            <Text>Vacinas</Text>
-          </TouchableOpacity>
-        </View>
-
-        {this.state.tabStatus === 'consultas' && (
-          <FlatList
-            data={this.state.consultations}
-            keyExtractor={item => `${item.id}`}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('ConsultationDetails', item)
-                }>
-                <ConsultationCard {...item} />
-              </TouchableOpacity>
-            )}
-          />
-        )}
-
-        {this.state.tabStatus === 'vacinas' && (
-          <FlatList
-            data={this.state.vaccines}
-            keyExtractor={item => `${item.id}`}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('VaccineDetails', {
-                    usuario: this.usuario,
-                    item,
-                  })
-                }>
-                <VaccineCard {...item} />
-              </TouchableOpacity>
-            )}
-          />
-        )}
-
-        {this.usuario.crmv.trim() > 0 && (
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.addButton}
-            onPress={() =>
-              this.props.navigation.navigate(this.state.form, this.state.pet)
-            }>
-            <Icon name="plus" size={20} color={commonStyles.colors.white} />
-          </TouchableOpacity>
-        )}
-      </SafeAreaView>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
