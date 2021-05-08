@@ -12,14 +12,13 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {Avatar} from 'react-native-elements';
 import {CheckBox} from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
-import {server, showError, showSuccess} from '../common';
+import {server, showError} from '../common';
 import commonStyles from '../commonStyles';
 import FormPetInput from '../components/FormPetInput';
 
@@ -49,12 +48,9 @@ export default ({route, navigation}) => {
     };
     launchImageLibrary(options, response => {
       if (response.didCancel) {
-        alert('User cancelled camera picker');
         return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        alert('Camera not available on device');
-        return;
-      } else if (response.errorCode == 'permission') {
+      }
+      if (response.errorCode == 'permission') {
         alert('Permission not satisfied');
         return;
       } else if (response.errorCode == 'others') {
@@ -133,98 +129,93 @@ export default ({route, navigation}) => {
       <StatusBar />
       <ScrollView>
         <View style={styles.formContainer}>
-          <View>
-            <FormPetInput
-              icon="paw"
-              onChangeText={nome => setPet({...pet, nome})}
-              placeholder="Informe o nome do pet"
-              value={pet.nome}
-            />
-
-            {this.getDatePicker()}
-
-            <FormPetInput
-              icon="weight"
-              keyboardType="decimal-pad"
-              onChangeText={peso => setPet({...pet, peso})}
-              placeholder="Informe o peso"
-              value={pet.peso}
-            />
-
-            <View style={styles.containerCheckboxAndTitle}>
-              <View style={styles.containerCheckboxText}>
-                <Icon name="venus-mars" size={20} style={styles.icon} />
-                <Text style={styles.titleCheckbox}>Sexo: </Text>
-              </View>
-              <View style={styles.containerCheckbox}>
-                <TouchableOpacity
-                  style={styles.checkbox}
-                  onPress={() => setPet({...pet, sexo: 'Fêmea'})}>
-                  <CheckBox
-                    center
-                    checkedIcon="dot-circle-o"
-                    uncheckedIcon="circle-o"
-                    checked={pet.sexo === 'Fêmea'}
-                    checkedColor={commonStyles.colors.secundary}
-                    onPress={() => setPet({...pet, sexo: 'Fêmea'})}
-                  />
-                  <Text style={styles.legendCheckbox}>Fêmea</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.checkbox}
-                  onPress={() => setPet({...pet, sexo: 'Macho'})}>
-                  <CheckBox
-                    center
-                    checkedIcon="dot-circle-o"
-                    uncheckedIcon="circle-o"
-                    checked={pet.sexo === 'Macho'}
-                    checkedColor={commonStyles.colors.secundary}
-                    onPress={() => setPet({...pet, sexo: 'Macho'})}
-                  />
-                  <Text style={styles.legendCheckbox}>Macho</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <FormPetInput
-              icon="plus"
-              onChangeText={observacoes => setPet({...pet, observacoes})}
-              placeholder="Alergias / informações relevantes"
-              value={pet.observacoes}
-            />
-
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={styles.buttonStyle}
-              onPress={() => chooseFile('photo')}>
-              <Text style={styles.textStyle}>Choose Image</Text>
+          <View style={styles.containerAvatar}>
+            <Image source={{uri: pet.avatarUrl}} style={styles.avatar} />
+            <TouchableOpacity onPress={() => chooseFile('photo')}>
+              <Text style={styles.textAlterPhoto}>ALTERAR FOTO</Text>
             </TouchableOpacity>
-
-            <Image source={{uri: pet.avatarUrl}} style={styles.imageStyle} />
-
-            {pet.id && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  this.editPet(pet);
-                  navigation.goBack();
-                }}>
-                <Text style={styles.customButtonText}>Salvar Alterações</Text>
-              </TouchableOpacity>
-            )}
-
-            {!pet.id && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  this.addPet(pet);
-                  navigation.goBack();
-                }}>
-                <Text style={styles.customButtonText}>Adicionar Pet</Text>
-              </TouchableOpacity>
-            )}
           </View>
+          <FormPetInput
+            icon="paw"
+            onChangeText={nome => setPet({...pet, nome})}
+            placeholder="Informe o nome do pet"
+            value={pet.nome}
+          />
+
+          {this.getDatePicker()}
+
+          <FormPetInput
+            icon="weight"
+            keyboardType="decimal-pad"
+            onChangeText={peso => setPet({...pet, peso})}
+            placeholder="Informe o peso"
+            value={pet.peso}
+          />
+
+          <View style={styles.containerCheckboxAndTitle}>
+            <View style={styles.containerCheckboxText}>
+              <Icon name="venus-mars" size={20} style={styles.icon} />
+              <Text style={styles.titleCheckbox}>Sexo: </Text>
+            </View>
+            <View style={styles.containerCheckbox}>
+              <TouchableOpacity
+                style={styles.checkbox}
+                onPress={() => setPet({...pet, sexo: 'Fêmea'})}>
+                <CheckBox
+                  center
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={pet.sexo === 'Fêmea'}
+                  checkedColor={commonStyles.colors.secundary}
+                  onPress={() => setPet({...pet, sexo: 'Fêmea'})}
+                />
+                <Text style={styles.legendCheckbox}>Fêmea</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.checkbox}
+                onPress={() => setPet({...pet, sexo: 'Macho'})}>
+                <CheckBox
+                  center
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={pet.sexo === 'Macho'}
+                  checkedColor={commonStyles.colors.secundary}
+                  onPress={() => setPet({...pet, sexo: 'Macho'})}
+                />
+                <Text style={styles.legendCheckbox}>Macho</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <FormPetInput
+            icon="plus"
+            onChangeText={observacoes => setPet({...pet, observacoes})}
+            placeholder="Alergias / informações relevantes"
+            value={pet.observacoes}
+          />
+
+          {pet.id && (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.editPet(pet);
+                navigation.goBack();
+              }}>
+              <Text style={styles.customButtonText}>Salvar Alterações</Text>
+            </TouchableOpacity>
+          )}
+
+          {!pet.id && (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                this.addPet(pet);
+                navigation.goBack();
+              }}>
+              <Text style={styles.customButtonText}>Adicionar Pet</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -239,16 +230,26 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     backgroundColor: commonStyles.colors.primary,
   },
+  containerAvatar: {
+    alignItems: 'center',
+  },
+  textAlterPhoto: {
+    marginTop: 15,
+    fontSize: 15,
+    color: commonStyles.colors.secundary,
+    fontWeight: 'bold',
+  },
   formContainer: {
     backgroundColor: commonStyles.colors.tertiary,
     flex: 1,
-    borderTopRightRadius: 30,
-    borderTopLeftRadius: 30,
+    borderRadius: 30,
     padding: 15,
-    alignItems: 'center',
+    paddingBottom: 30,
   },
   avatar: {
-    marginTop: -50,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
   containerDatePicker: {
     width: '100%',
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
   },
   containerCheckbox: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   titleCheckbox: {
@@ -310,22 +311,5 @@ const styles = StyleSheet.create({
   checkbox: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  buttonStyle: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 5,
-    marginVertical: 10,
-    width: 250,
-  },
-  textStyle: {
-    padding: 10,
-    color: 'black',
-    textAlign: 'center',
-  },
-  imageStyle: {
-    width: 200,
-    height: 200,
-    margin: 5,
   },
 });
