@@ -7,36 +7,36 @@ import commonStyles from '../commonStyles';
 import PetAge from '../components/PetAge';
 
 export default ({pet}) => {
-  const [setAvatar, avatar] = useState(true);
+  /* const [setAvatar, avatar] = useState(true);
 
-  const changeVisualizationAvatar = () => {};
+  const changeVisualizationOfAvatar = () => {
+    if (avatar) {
+      setAvatar(false);
+    } else {
+      setAvatar(true);
+    }
+  }; */
+
+  const verdadeiro = true;
+
   return (
     <View style={styles.container}>
-      <View>
+      {/* <View>
         <Avatar
           avatarStyle={{borderRadius: 10}}
           size="large"
           source={{uri: pet.avatarUrl}}
         />
-      </View>
+      </View> */}
 
       <View>
         <QRCode
           value={`${pet.id}`}
-          size={100}
+          size={120}
           color="black"
           backgroundColor="white"
         />
       </View>
-
-      {/* <TouchableOpacity
-        onPress={() =>
-          avatar ? setAvatar({'QrCode'}) : setAvatar('Avatar')
-        }>
-        <Text>Trocar para {avatar == 'Avatar' ? 'QrCode' : 'foto'}</Text>
-      </TouchableOpacity>
-
-      <Text>{avatar}</Text> */}
 
       <View style={styles.containerDetails}>
         <View style={styles.containerData}>
