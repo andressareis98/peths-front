@@ -1,7 +1,9 @@
 import {Alert, Platform} from 'react-native';
 
 const server =
-  Platform.OS === 'ios' ? 'http://localhost:3000' : 'http://192.168.1.109:3000';
+  Platform.OS === 'ios'
+    ? 'https://peths-back.herokuapp.com'
+    : 'https://peths-back.herokuapp.com';
 
 function showError(err) {
   Alert.alert('Ops! Ocorreu um problema!', `Mensagem: ${err}`);
@@ -12,3 +14,7 @@ function showSuccess(msg) {
 }
 
 export {server, showError, showSuccess};
+
+/*const server = axios.create({
+  baseURL: 'https://peths-back.herokuapp.com',
+});*/
