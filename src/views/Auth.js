@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
+  ScrollView,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 
 import axios from 'axios';
@@ -20,8 +23,8 @@ import AuthInput from '../components/AuthInput';
 const initialState = {
   nome: '',
   crmv: '',
-  email: 'teste1@teste.com',
-  senha: '1234567',
+  email: 'andressareis98@outlook.com',
+  senha: 'teste123',
   confirmarSenha: '',
   isVeterenarySelected: false,
   stageNew: false,
@@ -94,12 +97,18 @@ export default class Auth extends Component {
     const validForm = validations.reduce((t, a) => t && a);
 
     return (
-      <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.select({
+          ios: 'padding',
+          android: null,
+        })}
+        style={styles.container}>
         <StatusBar />
         <Image
           style={styles.image}
           source={require('../../assets/image/catdog.png')}
         />
+        <Text style={styles.title}>peths</Text>
         <View style={styles.inputArea}>
           {this.state.stageNew && (
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -137,7 +146,9 @@ export default class Auth extends Component {
           <AuthInput
             icon="at"
             placeholder="E-mail"
+            autoCapitalize="none"
             keyboardType="email-address"
+            aut
             value={this.state.email}
             onChangeText={email => this.setState({email})}
           />
@@ -180,7 +191,7 @@ export default class Auth extends Component {
               : 'Ainda não possui conta?'}
           </Text>
         </TouchableOpacity>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -191,6 +202,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: commonStyles.colors.primary,
+  },
+  title: {
+    fontSize: 100,
+    color: commonStyles.colors.white,
   },
   inputArea: {
     padding: 10,
