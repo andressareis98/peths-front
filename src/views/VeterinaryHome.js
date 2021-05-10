@@ -11,57 +11,34 @@ import {
   Alert,
 } from 'react-native';
 
+import {Icon} from 'react-native-elements';
+
 import QrCodeScanner from 'react-native-qrcode-scanner';
 
 import commonStyles from '../commonStyles';
 
-export default ({navigation, route}) => {
+export default ({route, navigation}) => {
   const usuario = route.params;
 
-  const [pet, setPet] = useState({petId: ''});
-
-  ifScaned = e => {
-    navigation.navigate('PetProfile', {
-      petId: e.data,
-      usuario: usuario,
-    });
-  };
-
   return (
-    <QrCodeScanner
-      containerStyle={{backgroundColor: '#FFF'}}
-      onRead={this.ifScaned}
-      reactivate={true}
-      permissionDialogMessage="Necessário permitir acesso à câmera"
-      reactivateTimeout={10}
-      showMarker={true}
-      markerStyle={{borderColor: '#FFF', borderRadius: 10}}
-      bottomContent={
-        <TouchableOpacity>
-          <Text>Scan QR Code</Text>
-        </TouchableOpacity>
-      }
-    />
-    /* <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar />
-      <Text>Informe o Id do pet: </Text>
-      <TextInput
-        style={styles.input}
-        value={pet.petId}
-        onChangeText={petId => setPet({petId: petId})}
-      />
+      <Text>Seja bem vindo(a)</Text>
+
+      <View>
+        <View>
+          <Text>Nome: {usuario.nome}</Text>
+          <Text>CRMV: {usuario.crmv}</Text>
+          <Text>E-mail: {usuario.email}</Text>
+        </View>
+      </View>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>
-          navigation.navigate('PetProfile', {
-            petId: pet.petId,
-            usuario: this.usuario,
-          })
-        }>
-        <Text style={styles.textButton}>Iniciar atendimento</Text>
+        onPress={() => navigation.navigate('QrCodeScanner', usuario)}>
+        <Text style={styles.textButton}>Ler qr Code</Text>
       </TouchableOpacity>
-    </SafeAreaView> */
+    </SafeAreaView>
   );
 };
 
@@ -72,7 +49,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  containerViewQrCode: {
+    flex: 1,
+  },
   input: {
     borderWidth: 1,
     borderRadius: 5,

@@ -13,6 +13,7 @@ import ConsultationDetails from './views/ConsultationDetails';
 import VaccineForm from './views/VaccineForm';
 import VaccineDetails from './views/VaccineDetails';
 import VeterinaryHome from './views/VeterinaryHome';
+import QrCodeScanner from './views/QrCodeScanner';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,11 @@ export default props => {
         <Stack.Screen
           name="VeterinaryHome"
           component={VeterinaryHome}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="QrCodeScanner"
+          component={QrCodeScanner}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
