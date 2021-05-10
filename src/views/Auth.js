@@ -23,7 +23,7 @@ import AuthInput from '../components/AuthInput';
 const initialState = {
   nome: '',
   crmv: '',
-  email: 'andressareis98@outlook.com',
+  email: 'maira@gmail.com',
   senha: 'teste123',
   confirmarSenha: '',
   isVeterenarySelected: false,
@@ -126,14 +126,6 @@ export default class Auth extends Component {
               <Text style={styles.checkboxText}>Sou um veterinário</Text>
             </View>
           )}
-          {this.state.stageNew && (
-            <AuthInput
-              icon="user"
-              placeholder="Nome"
-              value={this.state.nome}
-              onChangeText={nome => this.setState({nome})}
-            />
-          )}
 
           {this.state.stageNew && this.state.isVeterenarySelected && (
             <AuthInput
@@ -141,16 +133,32 @@ export default class Auth extends Component {
               placeholder="CRMV"
               value={this.state.crmv}
               onChangeText={crmv => this.setState({crmv})}
+              returnKeyType="next"
+              onSubmitEditing={() => field2.focus()}
             />
           )}
+
+          {this.state.stageNew && (
+            <AuthInput
+              icon="user"
+              placeholder="Nome"
+              value={this.state.nome}
+              onChangeText={nome => this.setState({nome})}
+              returnKeyType="next"
+              ref={input => {
+                field2 = input;
+              }}
+            />
+          )}
+
           <AuthInput
             icon="at"
             placeholder="E-mail"
             autoCapitalize="none"
             keyboardType="email-address"
-            aut
             value={this.state.email}
             onChangeText={email => this.setState({email})}
+            returnKeyType="next"
           />
           <AuthInput
             icon="lock"

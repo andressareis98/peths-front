@@ -125,7 +125,7 @@ export default ({route, navigation}) => {
         </View>
 
         <View style={styles.formContainer}>
-          <Text style={styles.titulo}>Precrição: </Text>
+          <Text style={styles.titulo}>Prescrição: </Text>
           <TextInput
             style={styles.input}
             onChangeText={prescricao =>

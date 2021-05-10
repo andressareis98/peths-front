@@ -7,18 +7,42 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Linking,
+  Alert,
 } from 'react-native';
+
+import QrCodeScanner from 'react-native-qrcode-scanner';
 
 import commonStyles from '../commonStyles';
 
 export default ({navigation, route}) => {
-  usuario = route.params;
-  console.log(usuario);
+  const usuario = route.params;
 
   const [pet, setPet] = useState({petId: ''});
 
+  ifScaned = e => {
+    navigation.navigate('PetProfile', {
+      petId: e.data,
+      usuario: usuario,
+    });
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <QrCodeScanner
+      containerStyle={{backgroundColor: '#FFF'}}
+      onRead={this.ifScaned}
+      reactivate={true}
+      permissionDialogMessage="Necessário permitir acesso à câmera"
+      reactivateTimeout={10}
+      showMarker={true}
+      markerStyle={{borderColor: '#FFF', borderRadius: 10}}
+      bottomContent={
+        <TouchableOpacity>
+          <Text>Scan QR Code</Text>
+        </TouchableOpacity>
+      }
+    />
+    /* <SafeAreaView style={styles.container}>
       <StatusBar />
       <Text>Informe o Id do pet: </Text>
       <TextInput
@@ -37,7 +61,7 @@ export default ({navigation, route}) => {
         }>
         <Text style={styles.textButton}>Iniciar atendimento</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </SafeAreaView> */
   );
 };
 
