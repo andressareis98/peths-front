@@ -7,18 +7,17 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Linking,
-  Alert,
 } from 'react-native';
-
-import {Icon} from 'react-native-elements';
-
-import QrCodeScanner from 'react-native-qrcode-scanner';
-
+import axios from 'axios';
 import commonStyles from '../commonStyles';
 
 export default ({route, navigation}) => {
   const usuario = route.params;
+
+  const logout = () => {
+    delete axios.defaults.headers.common['Authorization'];
+    navigation.navigate('Auth');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -37,6 +36,10 @@ export default ({route, navigation}) => {
         style={styles.button}
         onPress={() => navigation.navigate('QrCodeScanner', usuario)}>
         <Text style={styles.textButton}>Ler qr Code</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={logout}>
+        <Text>Sair</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
