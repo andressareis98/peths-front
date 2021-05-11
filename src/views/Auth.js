@@ -69,11 +69,8 @@ export default class Auth extends Component {
       axios.defaults.headers.common[
         'Authorization'
       ] = `bearer ${res.data.token}`;
-      if (!res.data.crmv) {
-        this.props.navigation.navigate('PetList', res.data);
-      } else {
-        this.props.navigation.navigate('VeterinaryHome', res.data);
-      }
+
+      this.props.navigation.navigate('Home', res.data);
     } catch (e) {
       showError(e);
     }

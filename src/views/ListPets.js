@@ -19,7 +19,7 @@ import PetAge from '../components/PetAge';
 
 import commonStyles from '../commonStyles';
 
-export default ({route, navigation}) => {
+export default ({usuario, navigation}) => {
   const [pet, setPet] = useState({
     pets: [],
   });
@@ -59,12 +59,6 @@ export default ({route, navigation}) => {
     }
   };
 
-  usuario = {
-    nome: route.params.nome,
-    email: route.params.email,
-    crmv: route.params.crmv,
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
@@ -82,7 +76,7 @@ export default ({route, navigation}) => {
               onPress={() =>
                 navigation.navigate('PetProfile', {
                   petId: item.id,
-                  usuario: this.usuario,
+                  usuario: usuario,
                 })
               }>
               <Avatar

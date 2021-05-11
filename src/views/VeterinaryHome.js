@@ -11,9 +11,7 @@ import {
 import axios from 'axios';
 import commonStyles from '../commonStyles';
 
-export default ({route, navigation}) => {
-  const usuario = route.params;
-
+export default ({usuario, navigation}) => {
   const logout = () => {
     delete axios.defaults.headers.common['Authorization'];
     navigation.navigate('Auth');
@@ -21,6 +19,7 @@ export default ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text>Ola</Text>
       <StatusBar />
       <Text>Seja bem vindo(a)</Text>
 

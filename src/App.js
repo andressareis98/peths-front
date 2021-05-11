@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import commonStyles from './commonStyles';
 
 import Auth from './views/Auth';
+import Home from './views/Home';
 import PetList from './views/ListPets';
 import PetForm from './views/PetForm';
 import PetProfile from './views/PetProfile';
@@ -24,6 +25,11 @@ export default props => {
         <Stack.Screen
           name="Auth"
           component={Auth}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
           options={{headerShown: false}}
         />
         <Stack.Screen
