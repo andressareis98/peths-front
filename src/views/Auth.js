@@ -70,7 +70,13 @@ export default class Auth extends Component {
         'Authorization'
       ] = `bearer ${res.data.token}`;
 
-      this.props.navigation.navigate('Home', res.data);
+      this.props.navigation.navigate('Home', {
+        screen: 'Home',
+        params: {
+          screen: 'Home',
+          params: {...res.data},
+        },
+      });
     } catch (e) {
       showError(e);
     }
