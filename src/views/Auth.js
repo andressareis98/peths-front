@@ -23,7 +23,7 @@ import AuthInput from '../components/AuthInput';
 const initialState = {
   nome: '',
   crmv: '',
-  email: 'maira@gmail.com',
+  email: 'andressareis98@outlook.com',
   senha: 'teste123',
   confirmarSenha: '',
   isVeterenarySelected: false,
@@ -131,7 +131,6 @@ export default class Auth extends Component {
               value={this.state.crmv}
               onChangeText={crmv => this.setState({crmv})}
               returnKeyType="next"
-              onSubmitEditing={() => field2.focus()}
             />
           )}
 
@@ -142,9 +141,6 @@ export default class Auth extends Component {
               value={this.state.nome}
               onChangeText={nome => this.setState({nome})}
               returnKeyType="next"
-              ref={input => {
-                field2 = input;
-              }}
             />
           )}
 
