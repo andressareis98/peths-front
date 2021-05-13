@@ -12,11 +12,6 @@ import axios from 'axios';
 import commonStyles from '../commonStyles';
 
 export default ({usuario, navigation}) => {
-  const logout = () => {
-    delete axios.defaults.headers.common['Authorization'];
-    navigation.navigate('Auth');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <Text>Ola</Text>
@@ -35,10 +30,6 @@ export default ({usuario, navigation}) => {
         style={styles.button}
         onPress={() => navigation.navigate('QrCodeScanner', usuario)}>
         <Text style={styles.textButton}>Ler qr Code</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={logout}>
-        <Text>Sair</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

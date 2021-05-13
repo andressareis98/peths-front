@@ -1,15 +1,21 @@
 import axios from 'axios';
 import React, {useState} from 'react';
-import {SafeAreaView, StatusBar, ScrollView, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView, StatusBar, TouchableOpacity, Text} from 'react-native';
 
 export default props => {
-  console.log(props.route);
+  const navigation = useNavigation();
+  const logout = () => {
+    delete axios.defaults.headers.common['Authorization'];
+    navigation.navigate('Auth');
+  };
   return (
     <SafeAreaView>
       <StatusBar />
-      <ScrollView>
-        <Text>Tela de profile</Text>
-      </ScrollView>
+
+      <TouchableOpacity onPress={logout}>
+        <Text>Sair</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
