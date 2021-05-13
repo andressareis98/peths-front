@@ -1,76 +1,75 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {Avatar} from 'react-native-elements';
 import {
-  Image,
+  Alert,
+  View,
   Text,
   StyleSheet,
-  View,
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  ScrollView,
   Platform,
   KeyboardAvoidingView,
+  Image,
 } from 'react-native';
-
-import axios from 'axios';
-import {server, showError, showSuccess} from '../common';
-
 import {CheckBox} from 'react-native-elements';
 
-import commonStyles from '../commonStyles';
+import {server, showError, showSuccess} from '../common';
+import axios from 'axios';
+
 import AuthInput from '../components/AuthInput';
+import commonStyles from '../commonStyles';
 
-const initialState = {
-  nome: '',
-  crmv: '',
-  email: 'andressareis98@outlook.com',
-  senha: 'teste123',
-  confirmarSenha: '',
-  isVeterenarySelected: false,
-  stageNew: false,
-};
+export default () => {
+  const navigation = useNavigation();
+  const [user, setUser] = useState({
+    nome: '',
+    crmv: '',
+    email: 'andressareis98@outlook.com',
+    senha: 'teste123',
+    confirmarSenha: '',
+    isVeterenarySelected: false,
+    stageNew: false,
+  });
 
-export default class Auth extends Component {
-  state = {
-    ...initialState,
-  };
+  const validations = [];
 
-  signinOrSignup = () => {
-    if (this.state.stageNew) {
-      this.signup();
+  const signinOrSignup = () => {
+    if (user.stageNew) {
+      signup();
     } else {
-      this.signin();
+      signin();
     }
   };
 
-  signup = async () => {
+  const signup = async () => {
     try {
       await axios.post(`${server}/signup`, {
-        nome: this.state.nome,
-        crmv: this.state.crmv,
-        email: this.state.email,
-        senha: this.state.senha,
+        nome: user.nome,
+        crmv: user.crmv,
+        email: user.email,
+        senha: user.senha,
       });
 
       showSuccess('Usuário cadastrado!');
-      this.setState({...initialState});
     } catch (e) {
       showError(e);
     }
   };
 
-  signin = async () => {
+  const signin = async () => {
     try {
       const res = await axios.post(`${server}/signin`, {
-        email: this.state.email,
-        senha: this.state.senha,
+        email: user.email,
+        senha: user.senha,
       });
 
       axios.defaults.headers.common[
         'Authorization'
       ] = `bearer ${res.data.token}`;
 
-      this.props.navigation.navigate('Home', {
+      navigation.navigate('Home', {
         screen: 'Home',
         params: {
           screen: 'Home',
@@ -82,126 +81,133 @@ export default class Auth extends Component {
     }
   };
 
-  render() {
-    const validations = [];
-
-    validations.push(this.state.email && this.state.email.includes('@'));
-    validations.push(this.state.senha && this.state.senha.length >= 6);
-
-    if (this.state.stageNew) {
-      validations.push(this.state.nome && this.state.nome.trim().length >= 2);
-      validations.push(this.state.senha === this.state.confirmarSenha);
+  const alterView = () => {
+    if (user.stageNew) {
+      setUser({...user, stageNew: false});
+    } else {
+      setUser({...user, stageNew: true});
     }
+  };
 
-    if (this.state.stageNew && this.state.isVeterenarySelected) {
-      validations.push(this.state.crmv && this.state.crmv.trim().length >= 3);
+  const alterProfileUser = () => {
+    if (user.isVeterenarySelected) {
+      setUser({...user, isVeterenarySelected: false});
+    } else {
+      setUser({...user, isVeterenarySelected: true});
     }
+  };
 
-    const validForm = validations.reduce((t, a) => t && a);
+  validations.push(user.email && user.email.includes('@'));
+  validations.push(user.senha && user.senha.length >= 6);
 
-    return (
-      <KeyboardAvoidingView
-        behavior={Platform.select({
-          ios: 'padding',
-          android: null,
-        })}
-        style={styles.container}>
-        <StatusBar />
-        <Image
-          style={styles.image}
-          source={require('../../assets/image/catdog.png')}
-        />
-        <Text style={styles.title}>peths</Text>
-        <View style={styles.inputArea}>
-          {this.state.stageNew && (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <CheckBox
-                size={30}
-                checkedColor={commonStyles.colors.white}
-                uncheckedColor={commonStyles.colors.white}
-                checked={this.state.isVeterenarySelected}
-                onPress={() =>
-                  this.setState({
-                    isVeterenarySelected: !this.state.isVeterenarySelected,
-                  })
-                }
-              />
-              <Text style={styles.checkboxText}>Sou um veterinário</Text>
-            </View>
-          )}
+  if (user.stageNew) {
+    validations.push(user.nome && user.nome.trim().length >= 2);
+    validations.push(user.senha === user.confirmarSenha);
+  }
 
-          {this.state.stageNew && this.state.isVeterenarySelected && (
-            <AuthInput
-              icon="vcard"
-              placeholder="CRMV"
-              value={this.state.crmv}
-              onChangeText={crmv => this.setState({crmv})}
-              returnKeyType="next"
+  if (user.stageNew && user.isVeterenarySelected) {
+    validations.push(user.crmv && user.crmv.trim().length >= 3);
+  }
+
+  const validForm = validations.reduce((t, a) => t && a);
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.select({
+        ios: 'padding',
+        android: null,
+      })}
+      style={styles.container}>
+      <StatusBar />
+      <Image
+        style={styles.image}
+        source={require('../../assets/image/catdog.png')}
+      />
+
+      <View style={styles.inputArea}>
+        {user.stageNew && (
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <CheckBox
+              size={30}
+              checkedColor={commonStyles.colors.white}
+              uncheckedColor={commonStyles.colors.white}
+              checked={user.isVeterenarySelected}
+              onPress={() => alterProfileUser()}
             />
-          )}
+            <Text style={styles.checkboxText}>Sou um veterinário</Text>
+          </View>
+        )}
 
-          {this.state.stageNew && (
-            <AuthInput
-              icon="user"
-              placeholder="Nome"
-              value={this.state.nome}
-              onChangeText={nome => this.setState({nome})}
-              returnKeyType="next"
-            />
-          )}
-
+        {user.stageNew && user.isVeterenarySelected && (
           <AuthInput
-            icon="at"
-            placeholder="E-mail"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            value={this.state.email}
-            onChangeText={email => this.setState({email})}
+            icon="vcard"
+            placeholder="CRMV"
+            value={user.crmv}
+            onChangeText={crmv => setUser({...user, crmv: crmv})}
             returnKeyType="next"
           />
-          <AuthInput
-            icon="lock"
-            placeholder="Senha"
-            secureTextEntry={true}
-            value={this.state.senha}
-            onChangeText={senha => this.setState({senha})}
-          />
-          {this.state.stageNew && (
-            <AuthInput
-              icon="asterisk"
-              placeholder="Confirmar senha"
-              secureTextEntry={true}
-              value={this.state.confirmarSenha}
-              onChangeText={confirmarSenha => this.setState({confirmarSenha})}
-            />
-          )}
+        )}
 
-          <TouchableOpacity
-            style={[
-              validForm ? styles.customButton : styles.disabledCustomButton,
-            ]}
-            onPress={this.signinOrSignup}
-            disabled={!validForm}>
-            <Text style={styles.customButtonText}>
-              {this.state.stageNew ? 'Registrar' : 'Entrar'}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {user.stageNew && (
+          <AuthInput
+            icon="user"
+            placeholder="Nome"
+            value={user.nome}
+            onChangeText={nome => setUser({...user, nome: nome})}
+            returnKeyType="next"
+          />
+        )}
+
+        <AuthInput
+          icon="at"
+          placeholder="E-mail"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          value={user.email}
+          onChangeText={email => setUser({...user, email: email})}
+          returnKeyType="next"
+        />
+
+        <AuthInput
+          icon="lock"
+          placeholder="Senha"
+          secureTextEntry={true}
+          value={user.senha}
+          onChangeText={senha => setUser({...user, senha: senha})}
+        />
+
+        {user.stageNew && (
+          <AuthInput
+            icon="asterisk"
+            placeholder="Confirmar Senha"
+            secureTextEntry={true}
+            value={user.confirmarSenha}
+            onChangeText={confirmarSenha =>
+              setUser({...user, confirmarSenha: confirmarSenha})
+            }
+          />
+        )}
 
         <TouchableOpacity
-          onPress={() => {
-            this.setState({stageNew: !this.state.stageNew});
-          }}>
-          <Text style={styles.boldText}>
-            {this.state.stageNew
-              ? 'Já possui conta?'
-              : 'Ainda não possui conta?'}
+          style={[
+            validForm ? styles.customButton : styles.disabledCustomButton,
+          ]}
+          onPress={signinOrSignup}
+          disabled={!validForm}>
+          <Text style={styles.customButtonText}>
+            {user.stageNew ? 'Registrar' : 'Entrar'}
           </Text>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
-    );
-  }
-}
+      </View>
+
+      <TouchableOpacity onPress={() => alterView()}>
+        <Text style={styles.boldText}>
+          {user.stageNew ? 'Já possui conta?' : 'Ainda não possui conta?'}
+        </Text>
+      </TouchableOpacity>
+    </KeyboardAvoidingView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
