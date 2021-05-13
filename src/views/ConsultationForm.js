@@ -13,6 +13,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
+import Services from '../services/Services';
 import {server, showError, showSuccess} from '../common';
 import PetDetails from '../components/PetDetails';
 import commonStyles from '../commonStyles';
@@ -28,40 +29,41 @@ export default ({route, navigation}) => {
 
   pet = route.params;
 
-  addConsult = async consultation => {
+  const addConsult = async consultation => {
     try {
-      await axios.post(`${server}/pets/${pet.id}/consultations`, {
-        data: consultation.data,
-        peso: consultation.peso,
-        diagnostico: consultation.diagnostico,
-        prescricao: consultation.prescricao,
-      });
+      await Services.newConsult(
+        consultation.data,
+        consultation.peso,
+        consultation.diagnostico,
+        consultation.prescricao,
+      );
     } catch (e) {
       showError(e);
     }
   };
 
-  editPet = async () => {
+  const editPet = async () => {
     try {
-      await axios.put(`${server}/pets/${pet.id}`, {
-        avatarUrl: pet.avatarUrl,
-        nome: pet.nome,
-        anoNascimento: pet.anoNascimento,
-        peso: consultation.peso,
-        sexo: pet.sexo,
-        observacoes: pet.observacoes,
-      });
+      await Services.editPet(
+        pet.id,
+        pet.avatarUrl,
+        pet.nome,
+        pet.anoNascimento,
+        consultation.peso,
+        pet.sexo,
+        pet.observacoes,
+      );
     } catch (e) {
       showError(e);
     }
   };
 
-  saveConsultation = consultation => {
+  const saveConsultation = consultation => {
     addConsult(consultation);
     editPet();
   };
 
-  getDatePicker = () => {
+  const getDatePicker = () => {
     let datePicker = (
       <DateTimePicker
         value={consultation.data}
@@ -99,7 +101,7 @@ export default ({route, navigation}) => {
       <View style={styles.container}>
         <View style={styles.formContainer}>
           <Text style={styles.titulo}>Data: </Text>
-          {this.getDatePicker()}
+          {getDatePicker()}
         </View>
 
         <View style={styles.formContainer}>
@@ -139,7 +141,7 @@ export default ({route, navigation}) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            this.saveConsultation(consultation);
+            saveConsultation(consultation);
             navigation.goBack();
           }}>
           <Text style={styles.textButton}>Salvar</Text>

@@ -1,12 +1,12 @@
-import axios from 'axios';
 import moment from 'moment';
 import React, {useState} from 'react';
 import {View, SafeAreaView, StatusBar, Text} from 'react-native';
 import {CheckBox} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-import {server, showError, showSuccess} from '../common';
+import {server, showError} from '../common';
 import PetDetails from '../components/PetDetails';
+import Services from '../services/Services';
 
 export default ({route, navigation}) => {
   const [vaccine, setVaccine] = useState({
@@ -20,11 +20,13 @@ export default ({route, navigation}) => {
 
   editStatusVaccine = async vaccine => {
     try {
-      await axios.put(`${server}/pets/${item.petId}/vaccines/${item.id}`, {
-        data: vaccine.data,
-        nome: vaccine.nome,
-        status: vaccine.status,
-      });
+      await Services.editVaccine(
+        item.petId,
+        item.id,
+        vaccine.data,
+        vaccine.nome,
+        vaccine.status,
+      );
     } catch (e) {
       showError(e);
     }

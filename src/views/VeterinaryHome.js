@@ -4,11 +4,9 @@ import {
   SafeAreaView,
   StatusBar,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import axios from 'axios';
 import commonStyles from '../commonStyles';
 
 export default ({usuario, navigation}) => {

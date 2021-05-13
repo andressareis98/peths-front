@@ -1,12 +1,13 @@
-import axios from 'axios';
-import React, {useState} from 'react';
+import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView, StatusBar, TouchableOpacity, Text} from 'react-native';
+
+import Services from '../services/Services';
 
 export default props => {
   const navigation = useNavigation();
   const logout = () => {
-    delete axios.defaults.headers.common['Authorization'];
+    Services.logout();
     navigation.navigate('Auth');
   };
   return (

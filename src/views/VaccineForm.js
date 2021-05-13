@@ -14,7 +14,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import {CheckBox} from 'react-native-elements';
 
-import {server, showError, showSuccess} from '../common';
+import Services from '../services/Services';
+import {showError} from '../common';
 import PetDetails from '../components/PetDetails';
 import commonStyles from '../commonStyles';
 
@@ -29,19 +30,20 @@ export default ({route, navigation}) => {
 
   pet = route.params;
 
-  addVaccine = async vaccine => {
+  const addVaccine = async vaccine => {
     try {
-      await axios.post(`${server}/pets/${pet.id}/vaccines`, {
-        data: vaccine.data,
-        nome: vaccine.nome,
-        status: vaccine.status,
-      });
+      await Services.newVaccine(
+        pet.id,
+        vaccine.data,
+        vaccine.nome,
+        vaccine.status,
+      );
     } catch (e) {
       showError(e);
     }
   };
 
-  getDatePicker = () => {
+  const getDatePicker = () => {
     let datePicker = (
       <DateTimePicker
         value={vaccine.data}
@@ -108,7 +110,7 @@ export default ({route, navigation}) => {
         </View>
 
         {!vaccine.isApplyVaccine && <Text style={styles.titulo}>Data:</Text>}
-        {!vaccine.isApplyVaccine && this.getDatePicker()}
+        {!vaccine.isApplyVaccine && getDatePicker()}
 
         <Text style={styles.titulo}>Vacina</Text>
         <TextInput
@@ -121,7 +123,7 @@ export default ({route, navigation}) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            this.addVaccine(vaccine);
+            addVaccine(vaccine);
             navigation.goBack();
           }}>
           <Text style={styles.textButton}>Salvar</Text>

@@ -10,10 +10,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import {server, showError} from '../common';
-import axios from 'axios';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import {showError} from '../common';
+import Services from '../services/Services';
 import PetDetails from '../components/PetDetails';
 import ConsultationCard from '../components/ConsultationCard';
 import VaccineCard from '../components/VaccineCard';
@@ -45,7 +46,7 @@ export default ({route, navigation}) => {
 
   const loadPet = async () => {
     try {
-      const res = await axios.get(`${server}/pets/${petProfile.petId}`);
+      const res = await Services.getPet(petProfile.petId);
       setPetProfile(prev => ({...prev, pet: res.data[0]}));
     } catch (e) {
       showError(e);
@@ -54,9 +55,7 @@ export default ({route, navigation}) => {
 
   const loadConsultations = async () => {
     try {
-      const res = await axios.get(
-        `${server}/pets/${petProfile.petId}/consultations`,
-      );
+      const res = await Services.listConsultations(petProfile.petId);
       setPetProfile(prev => ({...prev, consultations: res.data}));
     } catch (e) {
       showError(e);
@@ -65,9 +64,7 @@ export default ({route, navigation}) => {
 
   const loadVaccines = async () => {
     try {
-      const res = await axios.get(
-        `${server}/pets/${petProfile.petId}/vaccines`,
-      );
+      const res = await Services.listVaccines(petProfile.petId);
       setPetProfile(prev => ({...prev, vaccines: res.data}));
     } catch (e) {
       showError(e);

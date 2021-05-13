@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {Avatar} from 'react-native-elements';
 import {
   Alert,
@@ -12,11 +12,10 @@ import {
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {server, showError} from '../common';
-import axios from 'axios';
 
+import {showError} from '../common';
 import PetAge from '../components/PetAge';
-
+import Services from '../services/Services';
 import commonStyles from '../commonStyles';
 
 export default ({usuario, navigation}) => {
@@ -33,8 +32,17 @@ export default ({usuario, navigation}) => {
 
   const loadPets = async () => {
     try {
-      const res = await axios.get(`${server}/pets`);
+      const res = await Services.lisPets();
       setPet({pets: res.data});
+    } catch (e) {
+      showError(e);
+    }
+  };
+
+  const deletePet = async id => {
+    try {
+      await Services.deletePet(id);
+      await loadPets();
     } catch (e) {
       showError(e);
     }
@@ -48,15 +56,6 @@ export default ({usuario, navigation}) => {
       },
       {text: 'Deletar pet', onPress: () => deletePet(pet.id)},
     ]);
-  };
-
-  const deletePet = async id => {
-    try {
-      await axios.delete(`${server}/pets/${id}`);
-      await loadPets();
-    } catch (e) {
-      showError(e);
-    }
   };
 
   return (

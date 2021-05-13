@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, {useState} from 'react';
 import {
   Platform,
@@ -18,9 +17,10 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
-import {server, showError} from '../common';
+import {showError} from '../common';
 import commonStyles from '../commonStyles';
 import FormPetInput from '../components/FormPetInput';
+import Services from '../services/Services';
 
 export default ({route, navigation}) => {
   const [pet, setPet] = useState(
@@ -62,39 +62,38 @@ export default ({route, navigation}) => {
     });
   };
 
-  addPet = async pet => {
+  const addPet = async pet => {
     try {
-      await axios.post(`${server}/pets`, {
-        avatarUrl: `${pet.avatarUrl}`,
-        nome: pet.nome,
-        anoNascimento: pet.anoNascimento,
-        peso: pet.peso,
-        sexo: pet.sexo,
-        observacoes: pet.observacoes ? pet.observacoes : '',
-      });
+      await Services.newPet(
+        pet.avatarUrl,
+        pet.nome,
+        pet.anoNascimento,
+        pet.peso,
+        pet.sexo,
+        pet.observacoes,
+      );
     } catch (e) {
       showError(e);
     }
   };
 
-  editPet = async pet => {
+  const editPet = async pet => {
     try {
-      await axios.put(`${server}/pets/${pet.id}`, {
-        avatarUrl: pet.avatarUrl
-          ? pet.avatarUrl
-          : 'https://image.freepik.com/vetores-gratis/desenho-fofo-de-gato-e-cachorro_138676-3018.jpg',
-        nome: pet.nome,
-        anoNascimento: pet.anoNascimento,
-        peso: pet.peso,
-        sexo: pet.sexo,
-        observacoes: pet.observacoes ? pet.observacoes : '',
-      });
+      await Services.editPet(
+        pet.id,
+        pet.avatarUrl,
+        pet.nome,
+        pet.anoNascimento,
+        pet.peso,
+        pet.sexo,
+        pet.observacoes,
+      );
     } catch (e) {
       showError(e);
     }
   };
 
-  getDatePicker = () => {
+  const getDatePicker = () => {
     let datePicker = (
       <DateTimePicker
         value={pet.anoNascimento}
@@ -142,7 +141,7 @@ export default ({route, navigation}) => {
             value={pet.nome}
           />
 
-          {this.getDatePicker()}
+          {getDatePicker()}
 
           <FormPetInput
             icon="weight"
@@ -199,7 +198,7 @@ export default ({route, navigation}) => {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                this.editPet(pet);
+                editPet(pet);
                 navigation.goBack();
               }}>
               <Text style={styles.customButtonText}>Salvar Alterações</Text>
@@ -210,7 +209,7 @@ export default ({route, navigation}) => {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                this.addPet(pet);
+                addPet(pet);
                 navigation.goBack();
               }}>
               <Text style={styles.customButtonText}>Adicionar Pet</Text>

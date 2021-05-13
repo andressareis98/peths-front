@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {Avatar} from 'react-native-elements';
 import {
-  Alert,
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   StatusBar,
   Platform,
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
 import {CheckBox} from 'react-native-elements';
+
+import Services from '../services/Services';
 
 import {server, showError, showSuccess} from '../common';
 import axios from 'axios';
@@ -45,13 +44,7 @@ export default () => {
 
   const signup = async () => {
     try {
-      await axios.post(`${server}/signup`, {
-        nome: user.nome,
-        crmv: user.crmv,
-        email: user.email,
-        senha: user.senha,
-      });
-
+      await Services.signUp(user.nome, user.crmv, user.email, user.senha);
       showSuccess('Usuário cadastrado!');
     } catch (e) {
       showError(e);
@@ -60,10 +53,7 @@ export default () => {
 
   const signin = async () => {
     try {
-      const res = await axios.post(`${server}/signin`, {
-        email: user.email,
-        senha: user.senha,
-      });
+      const res = await Services.signIn(user.email, user.senha);
 
       axios.defaults.headers.common[
         'Authorization'
@@ -123,6 +113,8 @@ export default () => {
         style={styles.image}
         source={require('../../assets/image/catdog.png')}
       />
+
+      <Text style={styles.title}>peths</Text>
 
       <View style={styles.inputArea}>
         {user.stageNew && (

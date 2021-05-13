@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, SafeAreaView, Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 
 import QrCodeScanner from 'react-native-qrcode-scanner';
 
