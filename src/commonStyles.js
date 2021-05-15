@@ -7,6 +7,7 @@ export default {
     white: '#FFF',
     grayDark: '#4a5c60',
     black: '#000',
+    lightBlue: '#B0F4FF',
   },
   sizes: {
     input: 30,

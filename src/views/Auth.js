@@ -25,7 +25,7 @@ export default () => {
   const [user, setUser] = useState({
     nome: '',
     crmv: '',
-    email: 'andressareis98@outlook.com',
+    email: 'maira@gmail.com',
     senha: 'teste123',
     confirmarSenha: '',
     isVeterenarySelected: false,
@@ -59,13 +59,7 @@ export default () => {
         'Authorization'
       ] = `bearer ${res.data.token}`;
 
-      navigation.navigate('Home', {
-        screen: 'Home',
-        params: {
-          screen: 'Home',
-          params: {...res.data},
-        },
-      });
+      navigation.navigate('Home', res.data);
     } catch (e) {
       showError(e);
     }
@@ -193,7 +187,7 @@ export default () => {
       </View>
 
       <TouchableOpacity onPress={() => alterView()}>
-        <Text style={styles.boldText}>
+        <Text style={styles.text}>
           {user.stageNew ? 'Já possui conta?' : 'Ainda não possui conta?'}
         </Text>
       </TouchableOpacity>
@@ -213,13 +207,13 @@ const styles = StyleSheet.create({
     color: commonStyles.colors.white,
   },
   inputArea: {
-    padding: 10,
+    padding: 12,
     width: '100%',
   },
   customButton: {
     height: 50,
     backgroundColor: commonStyles.colors.secundary,
-    borderRadius: 25,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -234,12 +228,12 @@ const styles = StyleSheet.create({
   customButtonText: {
     fontSize: commonStyles.sizes.buttonText,
     color: commonStyles.colors.white,
+    fontSize: 20,
     padding: 1,
   },
-  boldText: {
-    fontSize: 15,
+  text: {
+    fontSize: 13,
     color: commonStyles.colors.secundary,
-    fontWeight: 'bold',
   },
   checkbox: {
     alignSelf: 'center',

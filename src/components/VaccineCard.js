@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import moment from 'moment';
 import commonStyles from '../commonStyles';
+import color from 'color';
 
 export default props => {
   return (
@@ -18,7 +19,9 @@ export default props => {
 
       <View style={styles.containerText}>
         <Text style={styles.titulo}>Status:</Text>
-        <Text>{props.status}</Text>
+        <Text style={props.status === 'Pendente' && styles.statusPendente}>
+          {props.status}
+        </Text>
       </View>
     </View>
   );
@@ -39,5 +42,8 @@ const styles = StyleSheet.create({
     color: commonStyles.colors.secundary,
     fontWeight: 'bold',
     fontSize: 15,
+  },
+  statusPendente: {
+    color: 'red',
   },
 });

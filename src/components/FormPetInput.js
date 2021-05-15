@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     height: 45,
     backgroundColor: '#fbfbfb',
-    borderRadius: 5,
+    borderRadius: 50,
     marginTop: 15,
   },
   icon: {

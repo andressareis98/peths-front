@@ -1,49 +1,30 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {Avatar} from 'react-native-elements';
+import {View, Text, StyleSheet, TouchableOpacity, Linking} from 'react-native';
+import {Avatar, Overlay} from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
+
 import commonStyles from '../commonStyles';
 
 import PetAge from '../components/PetAge';
 
 export default ({pet}) => {
-  /* const [setAvatar, avatar] = useState(true);
+  const [visible, setVisible] = useState(false);
 
-  const changeVisualizationOfAvatar = () => {
-    if (avatar) {
-      setAvatar(false);
-    } else {
-      setAvatar(true);
-    }
-  }; */
-
-  const verdadeiro = true;
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   return (
     <View style={styles.container}>
-      {/* <View>
+      <View>
         <Avatar
           avatarStyle={{borderRadius: 10}}
-          size="large"
+          size="xlarge"
           source={{uri: pet.avatarUrl}}
-        />
-      </View> */}
-
-      <View>
-        <QRCode
-          value={`${pet.id}`}
-          size={120}
-          color="black"
-          backgroundColor="white"
         />
       </View>
 
       <View style={styles.containerDetails}>
-        <View style={styles.containerData}>
-          <Text style={styles.title}>ID: </Text>
-          <Text>{pet.id}</Text>
-        </View>
-
         <View style={styles.containerData}>
           <Text style={styles.title}>Nome: </Text>
           <Text>{pet.nome}</Text>
@@ -70,29 +51,66 @@ export default ({pet}) => {
           <Text style={styles.title}>Observações: </Text>
           <Text>{pet.observacoes}</Text>
         </View>
+
+        <TouchableOpacity onPress={toggleOverlay}>
+          <Text style={styles.textShowQrCode}>VISUALIZAR QR CODE</Text>
+        </TouchableOpacity>
       </View>
+
+      <Overlay
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}
+        overlayStyle={styles.overlay}>
+        <QRCode
+          value={`${pet.id}`}
+          size={250}
+          color={commonStyles.colors.secundary}
+          backgroundColor="white"
+        />
+        <Text style={styles.textOverlay}>Id do pet: {pet.id}</Text>
+      </Overlay>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: commonStyles.colors.primary,
   },
   avatar: {
     marginRight: 10,
   },
   containerDetails: {
-    marginLeft: 10,
+    marginLeft: 20,
   },
   containerData: {
     flexDirection: 'row',
+    marginTop: 5,
   },
   title: {
     fontWeight: 'bold',
     fontSize: 15,
+    color: commonStyles.colors.black,
+  },
+  textShowQrCode: {
+    marginVertical: 10,
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: commonStyles.colors.secundary,
+  },
+  overlay: {
+    width: '95%',
+    padding: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textOverlay: {
+    fontSize: 15,
+    marginTop: 20,
+    fontWeight: 'bold',
+    color: commonStyles.colors.grayDark,
   },
 });

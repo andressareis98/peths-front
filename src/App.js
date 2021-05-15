@@ -1,13 +1,11 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import commonStyles from './commonStyles';
 
 import Auth from './views/Auth';
 import Home from './views/Home';
-import Profile from './views/Profile';
 import PetList from './views/ListPets';
 import PetForm from './views/PetForm';
 import PetProfile from './views/PetProfile';
@@ -19,65 +17,6 @@ import VeterinaryHome from './views/VeterinaryHome';
 import QrCodeScanner from './views/QrCodeScanner';
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-
-const StackRoute = () => (
-  <Stack.Navigator initialRouteName="Home">
-    <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
-    <Stack.Screen
-      name="PetList"
-      component={PetList}
-      options={{headerShown: false}}
-    />
-    <Stack.Screen
-      name="PetForm"
-      options={{title: 'Cadastro do Pet'}}
-      component={PetForm}
-    />
-    <Stack.Screen
-      name="PetProfile"
-      component={PetProfile}
-      options={{title: 'Informações do pet', headerTitleAlign: 'center'}}
-    />
-    <Stack.Screen
-      name="ConsultationForm"
-      options={{title: 'Cadastro de Consulta'}}
-      component={ConsultationForm}
-    />
-    <Stack.Screen
-      name="ConsultationDetails"
-      options={{title: 'Detalhes sobre a consulta'}}
-      component={ConsultationDetails}
-    />
-    <Stack.Screen
-      name="VaccineForm"
-      options={{title: 'Cadastro de Vacina'}}
-      component={VaccineForm}
-    />
-    <Stack.Screen
-      name="VaccineDetails"
-      options={{title: 'Detalhes sobre a Vacina'}}
-      component={VaccineDetails}
-    />
-    <Stack.Screen
-      name="VeterinaryHome"
-      component={VeterinaryHome}
-      options={{headerShown: false}}
-    />
-    <Stack.Screen
-      name="QrCodeScanner"
-      component={QrCodeScanner}
-      options={{headerShown: false}}
-    />
-  </Stack.Navigator>
-);
-
-const TabRoute = () => (
-  <Tab.Navigator>
-    <Tab.Screen name="Home" component={StackRoute} />
-    <Tab.Screen name="Profile" component={Profile} />
-  </Tab.Navigator>
-);
 
 export default props => {
   return (
@@ -90,7 +29,52 @@ export default props => {
         />
         <Stack.Screen
           name="Home"
-          component={TabRoute}
+          component={Home}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PetList"
+          component={PetList}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PetForm"
+          options={{title: 'Cadastro do Pet'}}
+          component={PetForm}
+        />
+        <Stack.Screen
+          name="PetProfile"
+          component={PetProfile}
+          options={{title: 'Informações do pet', headerTitleAlign: 'center'}}
+        />
+        <Stack.Screen
+          name="ConsultationForm"
+          options={{title: 'Cadastro de Consulta'}}
+          component={ConsultationForm}
+        />
+        <Stack.Screen
+          name="ConsultationDetails"
+          options={{title: 'Detalhes sobre a consulta'}}
+          component={ConsultationDetails}
+        />
+        <Stack.Screen
+          name="VaccineForm"
+          options={{title: 'Cadastro de Vacina'}}
+          component={VaccineForm}
+        />
+        <Stack.Screen
+          name="VaccineDetails"
+          options={{title: 'Detalhes sobre a Vacina'}}
+          component={VaccineDetails}
+        />
+        <Stack.Screen
+          name="VeterinaryHome"
+          component={VeterinaryHome}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="QrCodeScanner"
+          component={QrCodeScanner}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

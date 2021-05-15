@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, {useState} from 'react';
 import {
   View,
@@ -60,9 +59,10 @@ export default ({route, navigation}) => {
       datePicker = (
         <View>
           <TouchableOpacity
+            style={styles.inputData}
             onPress={() => setVaccine({...vaccine, showDatePicker: true})}>
             <View>
-              <Text>{dateString}</Text>
+              <Text style={styles.textInput}>{dateString}</Text>
             </View>
           </TouchableOpacity>
           {vaccine.showDatePicker && datePicker}
@@ -73,52 +73,69 @@ export default ({route, navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={styles.container}>
       <StatusBar />
       <PetDetails pet={pet} />
-      <View style={styles.container}>
-        <Text>Ação: </Text>
+      <View style={styles.containerDetails}>
+        <Text style={styles.title}>Ação: </Text>
         <View style={{flexDirection: 'row'}}>
-          <CheckBox
-            center
-            title="Aplicar Vacina"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            checked={vaccine.isApplyVaccine}
-            onPress={() =>
-              setVaccine({
-                ...vaccine,
-                isApplyVaccine: true,
-                status: 'Concluído',
-              })
-            }
-          />
-          <CheckBox
-            center
-            title="Agendar Vacina"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            checked={!vaccine.isApplyVaccine}
-            onPress={() =>
-              setVaccine({
-                ...vaccine,
-                isApplyVaccine: false,
-                status: 'Pendente',
-              })
-            }
+          <View style={styles.containerCheckbox}>
+            <CheckBox
+              containerStyle={{marginLeft: 0}}
+              checkedColor={commonStyles.colors.primary}
+              uncheckedColor={commonStyles.colors.primary}
+              center
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              checked={vaccine.isApplyVaccine}
+              onPress={() =>
+                setVaccine({
+                  ...vaccine,
+                  isApplyVaccine: true,
+                  status: 'Concluído',
+                })
+              }
+            />
+            <Text>Aplicar Vacina</Text>
+          </View>
+          <View style={styles.containerCheckbox}>
+            <CheckBox
+              containerStyle={{marginLeft: 0}}
+              checkedColor={commonStyles.colors.primary}
+              uncheckedColor={commonStyles.colors.primary}
+              center
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+              checked={!vaccine.isApplyVaccine}
+              onPress={() =>
+                setVaccine({
+                  ...vaccine,
+                  isApplyVaccine: false,
+                  status: 'Pendente',
+                })
+              }
+            />
+            <Text>Agendar Vacina</Text>
+          </View>
+        </View>
+
+        <View style={styles.viewData}>
+          <Text style={styles.title}>Vacina</Text>
+          <TextInput
+            style={styles.input}
+            placeholderTextColor={commonStyles.colors.secundary}
+            onChangeText={nome => setVaccine({...vaccine, nome})}
+            placeholder="Informe o nome"
+            value={vaccine.nome}
           />
         </View>
 
-        {!vaccine.isApplyVaccine && <Text style={styles.titulo}>Data:</Text>}
-        {!vaccine.isApplyVaccine && getDatePicker()}
-
-        <Text style={styles.titulo}>Vacina</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={nome => setVaccine({...vaccine, nome})}
-          placeholder="Informe o nome"
-          value={vaccine.nome}
-        />
+        {!vaccine.isApplyVaccine && (
+          <View style={styles.viewData}>
+            <Text style={styles.title}>Data:</Text>
+            {getDatePicker()}
+          </View>
+        )}
 
         <TouchableOpacity
           style={styles.button}
@@ -135,35 +152,64 @@ export default ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    flex: 1,
+    backgroundColor: commonStyles.colors.primary,
+    paddingHorizontal: 20,
   },
-  formContainer: {
-    flexDirection: 'column',
-    marginBottom: 10,
+  containerDetails: {
+    flex: 1,
+    backgroundColor: commonStyles.colors.white,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    paddingHorizontal: 15,
+    paddingTop: 56,
   },
-  titulo: {
+  viewData: {
+    marginBottom: 15,
+  },
+  title: {
     color: commonStyles.colors.secundary,
     fontWeight: 'bold',
-    marginRight: 10,
-    fontSize: 15,
-    marginBottom: 10,
+  },
+  subtitle: {
+    color: commonStyles.colors.black,
+  },
+  containerCheckbox: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   input: {
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: commonStyles.colors.primary,
-    marginBottom: 10,
+    width: '100%',
+    color: commonStyles.colors.secundary,
+    height: 47,
+    marginTop: 5,
+    backgroundColor: commonStyles.colors.lightBlue,
+    borderRadius: 50,
+    paddingLeft: 17,
+  },
+  inputData: {
+    width: '100%',
+    height: 47,
+    backgroundColor: commonStyles.colors.lightBlue,
+    marginTop: 5,
+    borderRadius: 50,
+    paddingLeft: 17,
+    justifyContent: 'center',
+    color: commonStyles.colors.secundary,
+  },
+  textInput: {
+    color: commonStyles.colors.secundary,
   },
   button: {
-    backgroundColor: commonStyles.colors.primary,
-    width: '100%',
-    alignItems: 'center',
+    backgroundColor: commonStyles.colors.secundary,
     justifyContent: 'center',
-    borderRadius: 5,
-    padding: 10,
+    alignItems: 'center',
+    width: '100%',
+    borderRadius: 50,
+    paddingVertical: 12,
   },
   textButton: {
     color: commonStyles.colors.white,
-    fontSize: 15,
   },
 });

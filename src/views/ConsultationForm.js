@@ -14,9 +14,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
 import Services from '../services/Services';
-import {server, showError, showSuccess} from '../common';
+import {showError} from '../common';
 import PetDetails from '../components/PetDetails';
 import commonStyles from '../commonStyles';
+import {ScrollView} from 'react-native';
 
 export default ({route, navigation}) => {
   const [consultation, setConsultation] = useState({
@@ -80,11 +81,12 @@ export default ({route, navigation}) => {
       datePicker = (
         <View>
           <TouchableOpacity
+            style={styles.inputData}
             onPress={() =>
               setConsultation({...consultation, showDatePicker: true})
             }>
             <View>
-              <Text>{dateString}</Text>
+              <Text style={styles.textInput}>{dateString}</Text>
             </View>
           </TouchableOpacity>
           {consultation.showDatePicker && datePicker}
@@ -95,57 +97,62 @@ export default ({route, navigation}) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <StatusBar />
       <PetDetails pet={pet} />
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={styles.titulo}>Data: </Text>
-          {getDatePicker()}
-        </View>
+      <View style={styles.containerDetails}>
+        <ScrollView>
+          <View style={styles.viewData}>
+            <Text style={styles.title}>Data: </Text>
+            {getDatePicker()}
+          </View>
 
-        <View style={styles.formContainer}>
-          <Text style={styles.titulo}>Peso: </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={peso => setConsultation({...consultation, peso})}
-            placeholder="Informe o peso do pet"
-            value={consultation.peso}
-          />
-        </View>
+          <View style={styles.viewData}>
+            <Text style={styles.title}>Peso: </Text>
+            <TextInput
+              style={styles.input}
+              placeholderTextColor={commonStyles.colors.secundary}
+              onChangeText={peso => setConsultation({...consultation, peso})}
+              placeholder="Informe o peso do pet"
+              value={consultation.peso}
+            />
+          </View>
 
-        <View style={styles.formContainer}>
-          <Text style={styles.titulo}>Dignostico: </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={diagnostico =>
-              setConsultation({...consultation, diagnostico})
-            }
-            placeholder="Informe o diagnostico"
-            value={consultation.diagnostico}
-          />
-        </View>
+          <View style={styles.viewData}>
+            <Text style={styles.title}>Dignóstico: </Text>
+            <TextInput
+              style={styles.input}
+              placeholderTextColor={commonStyles.colors.secundary}
+              onChangeText={diagnostico =>
+                setConsultation({...consultation, diagnostico})
+              }
+              placeholder="Informe o diagnóstico"
+              value={consultation.diagnostico}
+            />
+          </View>
 
-        <View style={styles.formContainer}>
-          <Text style={styles.titulo}>Prescrição: </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={prescricao =>
-              setConsultation({...consultation, prescricao})
-            }
-            placeholder="Informe a prescrição"
-            value={consultation.prescricao}
-          />
-        </View>
+          <View style={styles.viewData}>
+            <Text style={styles.title}>Prescrição: </Text>
+            <TextInput
+              style={styles.input}
+              placeholderTextColor={commonStyles.colors.secundary}
+              onChangeText={prescricao =>
+                setConsultation({...consultation, prescricao})
+              }
+              placeholder="Informe a prescrição"
+              value={consultation.prescricao}
+            />
+          </View>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            saveConsultation(consultation);
-            navigation.goBack();
-          }}>
-          <Text style={styles.textButton}>Salvar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              saveConsultation(consultation);
+              navigation.goBack();
+            }}>
+            <Text style={styles.textButton}>Salvar</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -153,30 +160,62 @@ export default ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    flex: 1,
+    backgroundColor: commonStyles.colors.primary,
+    paddingHorizontal: 20,
   },
-  formContainer: {
-    flexDirection: 'column',
-    marginBottom: 10,
+  containerDetails: {
+    flex: 1,
+    backgroundColor: commonStyles.colors.white,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    paddingHorizontal: 15,
+    paddingTop: 40,
   },
-  titulo: {
+  viewData: {
+    marginBottom: 15,
+  },
+  title: {
     color: commonStyles.colors.secundary,
     fontWeight: 'bold',
-    marginRight: 10,
-    fontSize: 15,
+  },
+  subtitle: {
+    color: commonStyles.colors.black,
+  },
+  containerCheckbox: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   input: {
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: commonStyles.colors.primary,
+    width: '100%',
+    height: 47,
+    color: commonStyles.colors.secundary,
+    marginTop: 5,
+    backgroundColor: commonStyles.colors.lightBlue,
+    borderRadius: 50,
+    paddingLeft: 17,
+  },
+  inputData: {
+    width: '100%',
+    height: 47,
+    backgroundColor: commonStyles.colors.lightBlue,
+    marginTop: 5,
+    borderRadius: 50,
+    paddingLeft: 17,
+    justifyContent: 'center',
+    color: commonStyles.colors.secundary,
+  },
+  textInput: {
+    color: commonStyles.colors.secundary,
   },
   button: {
-    backgroundColor: commonStyles.colors.primary,
-    width: '100%',
-    alignItems: 'center',
+    backgroundColor: commonStyles.colors.secundary,
     justifyContent: 'center',
-    borderRadius: 5,
-    padding: 10,
+    alignItems: 'center',
+    width: '100%',
+    borderRadius: 50,
+    paddingVertical: 12,
   },
   textButton: {
     color: commonStyles.colors.white,

@@ -12,6 +12,7 @@ import {
 import {useFocusEffect} from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {showError} from '../common';
 import Services from '../services/Services';
@@ -90,7 +91,24 @@ export default ({route, navigation}) => {
             styles.tab,
             petProfile.tabStatus === 'consultas' && styles.btnTabActive,
           ]}>
-          <Text>Consultas</Text>
+          <Text
+            style={[
+              styles.textTab,
+              petProfile.tabStatus === 'consultas'
+                ? styles.textTabActive
+                : styles.textTabInative,
+            ]}>
+            Consultas
+          </Text>
+          <IconMaterialCommunityIcons
+            name="medical-bag"
+            size={25}
+            color={
+              petProfile.tabStatus === 'consultas'
+                ? commonStyles.colors.secundary
+                : commonStyles.colors.grayDark
+            }
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
@@ -104,39 +122,81 @@ export default ({route, navigation}) => {
             styles.tab,
             petProfile.tabStatus === 'vacinas' && styles.btnTabActive,
           ]}>
-          <Text>Vacinas</Text>
+          <Text
+            style={[
+              styles.textTab,
+              petProfile.tabStatus === 'vacinas'
+                ? styles.textTabActive
+                : styles.textTabInative,
+            ]}>
+            Vacinas
+          </Text>
+          <IconMaterialCommunityIcons
+            name="needle"
+            size={25}
+            color={
+              petProfile.tabStatus === 'vacinas'
+                ? commonStyles.colors.secundary
+                : commonStyles.colors.grayDark
+            }
+          />
         </TouchableOpacity>
       </View>
 
       {petProfile.tabStatus === 'consultas' && (
-        <FlatList
-          data={petProfile.consultations.sort((a, b) => b.data > a.data)}
-          keyExtractor={item => `${item.id}`}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ConsultationDetails', item)}>
-              <ConsultationCard {...item} />
-            </TouchableOpacity>
+        <>
+          {petProfile.consultations.length === 0 && (
+            <View style={styles.listEmpty}>
+              <Text>Não há consultas cadastradas</Text>
+            </View>
           )}
-        />
+          {petProfile.consultations.length > 0 && (
+            <FlatList
+              data={petProfile.consultations.sort((a, b) => b.data > a.data)}
+              keyExtractor={item => `${item.id}`}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('ConsultationDetails', {
+                      item,
+                      pet: petProfile.pet,
+                    })
+                  }>
+                  <ConsultationCard {...item} />
+                </TouchableOpacity>
+              )}
+            />
+          )}
+        </>
       )}
 
       {petProfile.tabStatus === 'vacinas' && (
-        <FlatList
-          data={petProfile.vaccines.sort((a, b) => b.data > a.data)}
-          keyExtractor={item => `${item.id}`}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('VaccineDetails', {
-                  usuario: petProfile.usuario,
-                  item,
-                })
-              }>
-              <VaccineCard {...item} />
-            </TouchableOpacity>
+        <>
+          {petProfile.vaccines.length == 0 && (
+            <View style={styles.listEmpty}>
+              <Text>Não há vacinas cadastradas</Text>
+            </View>
           )}
-        />
+
+          {petProfile.vaccines.length > 0 && (
+            <FlatList
+              data={petProfile.vaccines.sort((a, b) => b.data > a.data)}
+              keyExtractor={item => `${item.id}`}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('VaccineDetails', {
+                      usuario: petProfile.usuario,
+                      item,
+                      pet: petProfile.pet,
+                    })
+                  }>
+                  <VaccineCard {...item} />
+                </TouchableOpacity>
+              )}
+            />
+          )}
+        </>
       )}
 
       {petProfile?.usuario?.crmv.trim() > 0 && (
@@ -156,9 +216,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: commonStyles.colors.primary,
   },
-  petDatails: {
-    margin: 10,
-  },
   tabContainer: {
     flexDirection: 'row',
     backgroundColor: commonStyles.colors.white,
@@ -166,17 +223,32 @@ const styles = StyleSheet.create({
   tab: {
     width: Dimensions.get('window').width / 2,
     flexDirection: 'row',
-    borderWidth: 0.5,
-    borderColor: commonStyles.colors.primary,
     padding: 10,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textTab: {
+    fontSize: 15,
+  },
+  textTabActive: {
+    color: commonStyles.colors.secundary,
+    fontWeight: 'bold',
+  },
+  textTabInative: {
+    color: commonStyles.colors.grayDark,
   },
   btnTabActive: {
-    borderBottomWidth: 3,
+    borderBottomWidth: 5,
     borderBottomColor: commonStyles.colors.secundary,
   },
-  listTabContainer: {
-    margin: 10,
+  viewList: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  listEmpty: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   addButton: {
     position: 'absolute',
@@ -185,7 +257,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: commonStyles.colors.tertiary,
+    backgroundColor: commonStyles.colors.secundary,
     alignItems: 'center',
     justifyContent: 'center',
   },

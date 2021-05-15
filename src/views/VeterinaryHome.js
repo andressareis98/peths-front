@@ -6,10 +6,13 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  TextInput,
 } from 'react-native';
 import commonStyles from '../commonStyles';
 
 export default ({usuario, navigation}) => {
+  const [pet, setPet] = useState({petId: '2'});
+
   return (
     <SafeAreaView style={styles.container}>
       <Text>Ola</Text>
@@ -23,6 +26,23 @@ export default ({usuario, navigation}) => {
           <Text>E-mail: {usuario.email}</Text>
         </View>
       </View>
+
+      <TextInput
+        style={styles.input}
+        value={pet.petId}
+        onChangeText={petId => setPet({petId: petId})}
+      />
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>
+          navigation.navigate('PetProfile', {
+            petId: pet.petId,
+            usuario: usuario,
+          })
+        }>
+        <Text style={styles.textButton}>Iniciar atendimento</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.button}

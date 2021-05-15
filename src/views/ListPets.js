@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {showError} from '../common';
 import PetAge from '../components/PetAge';
@@ -58,12 +59,38 @@ export default ({usuario, navigation}) => {
     ]);
   };
 
+  const alertlogout = () => {
+    Alert.alert('Sair', `Deseja sair da sua conta?`, [
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
+      {
+        text: 'Sim',
+        onPress: () => logout(),
+      },
+    ]);
+  };
+
+  const logout = () => {
+    navigation.navigate('Auth');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
-      <Text numberOfLines={2} style={styles.headerTitle}>
-        Encontre o seu pet
-      </Text>
+      <View style={styles.containerTitle}>
+        <Text numberOfLines={2} style={styles.title}>
+          Encontre o seu pet
+        </Text>
+        <TouchableOpacity onPress={() => alertlogout()}>
+          <Ionicons
+            name="exit-outline"
+            size={40}
+            color={commonStyles.colors.white}
+          />
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         style={styles.listArea}
@@ -114,7 +141,7 @@ export default ({usuario, navigation}) => {
         activeOpacity={0.7}
         style={styles.addButton}
         onPress={() => navigation.navigate('PetForm')}>
-        <Icon name="plus" size={20} color={commonStyles.colors.secundary} />
+        <Icon name="plus" size={20} color={commonStyles.colors.white} />
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -126,8 +153,13 @@ const styles = StyleSheet.create({
     backgroundColor: commonStyles.colors.primary,
     padding: 15,
   },
-  headerTitle: {
+  containerTitle: {
     marginTop: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  title: {
     fontSize: 30,
     fontWeight: 'bold',
     color: commonStyles.colors.white,
@@ -141,7 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: commonStyles.colors.white,
     marginBottom: 20,
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 25,
     alignItems: 'center',
   },
   dataPetItem: {
@@ -181,7 +213,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: commonStyles.colors.white,
+    backgroundColor: commonStyles.colors.secundary,
     alignItems: 'center',
     justifyContent: 'center',
   },
