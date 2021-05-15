@@ -7,8 +7,9 @@ import {useNavigation} from '@react-navigation/native';
 import {Button, Icon} from 'react-native-elements';
 
 import commonStyles from './commonStyles';
-import Services from '../src/services/Services';
+import axios from 'axios';
 
+import AuthOrHome from './views/AuthOrHome';
 import Auth from './views/Auth';
 import Home from './views/Home';
 import PetList from './views/ListPets';
@@ -20,13 +21,21 @@ import VaccineForm from './views/VaccineForm';
 import VaccineDetails from './views/VaccineDetails';
 import VeterinaryHome from './views/VeterinaryHome';
 import QrCodeScanner from './views/QrCodeScanner';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 
 export default props => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Auth" screenOptions={screenOptions}>
+      <Stack.Navigator
+        initialRouteName="AuthOrHome"
+        screenOptions={screenOptions}>
+        <Stack.Screen
+          name="AuthOrHome"
+          component={AuthOrHome}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Auth"
           component={Auth}
@@ -42,9 +51,9 @@ export default props => {
               headerRight: () => (
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.reset({
-                      routes: [{name: 'Auth'}],
-                    });
+                    delete axios.defaults.headers.common['Authorization'];
+                    AsyncStorage.removeItem('userData'),
+                      navigation.reset({routes: [{name: 'AuthOrHome'}]});
                   }}>
                   <Text style={styles.text}>Sair</Text>
                 </TouchableOpacity>

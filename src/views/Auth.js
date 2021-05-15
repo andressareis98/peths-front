@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {CheckBox} from 'react-native-elements';
 
 import Services from '../services/Services';
@@ -26,8 +27,8 @@ export default () => {
   const [user, setUser] = useState({
     nome: '',
     crmv: '',
-    email: 'maira@gmail.com',
-    senha: 'teste123',
+    email: '',
+    senha: '',
     confirmarSenha: '',
     isVeterenarySelected: false,
     stageNew: false,
@@ -62,6 +63,7 @@ export default () => {
         'Authorization'
       ] = `bearer ${res.data.token}`;
 
+      AsyncStorage.setItem('userData', JSON.stringify(res.data));
       navigation.reset({
         routes: [{name: 'Home', params: res.data}],
       });
@@ -108,10 +110,7 @@ export default () => {
       })}
       style={styles.container}>
       <StatusBar />
-      <Image
-        style={styles.image}
-        source={require('../../assets/image/catdog.png')}
-      />
+      <Image source={require('../../assets/image/catdog.png')} />
 
       <Text style={styles.title}>peths</Text>
 
@@ -208,7 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: commonStyles.colors.primary,
   },
   title: {
-    fontSize: 50,
+    fontSize: 100,
     color: commonStyles.colors.white,
   },
   inputArea: {
