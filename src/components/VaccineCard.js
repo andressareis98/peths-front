@@ -30,7 +30,7 @@ export default props => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     backgroundColor: commonStyles.colors.white,
     margin: 10,
   },

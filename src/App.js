@@ -2,6 +2,8 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
+import {Button, Icon} from 'react-native-elements';
+
 import commonStyles from './commonStyles';
 
 import Auth from './views/Auth';
@@ -39,33 +41,106 @@ export default props => {
         />
         <Stack.Screen
           name="PetForm"
-          options={{title: 'Cadastro do Pet'}}
           component={PetForm}
+          options={({navigation}) => {
+            return {
+              title: 'Cadastro do Pet',
+              headerTitleAlign: 'center',
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate('Home')}
+                  type="clear"
+                  icon={<Icon name="home" size={30} color="white" />}
+                />
+              ),
+            };
+          }}
         />
         <Stack.Screen
           name="PetProfile"
           component={PetProfile}
-          options={{title: 'Informações do pet', headerTitleAlign: 'center'}}
+          options={({navigation}) => {
+            return {
+              title: 'Informações sobre o Pet',
+              headerTitleAlign: 'center',
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate('Home')}
+                  type="clear"
+                  icon={<Icon name="home" size={30} color="white" />}
+                />
+              ),
+            };
+          }}
         />
+
         <Stack.Screen
           name="ConsultationForm"
-          options={{title: 'Cadastro de Consulta'}}
           component={ConsultationForm}
+          options={({navigation}) => {
+            return {
+              title: 'Cadastro de Consulta',
+              headerTitleAlign: 'center',
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate('Home')}
+                  type="clear"
+                  icon={<Icon name="home" size={30} color="white" />}
+                />
+              ),
+            };
+          }}
         />
         <Stack.Screen
           name="ConsultationDetails"
-          options={{title: 'Detalhes sobre a consulta'}}
           component={ConsultationDetails}
+          options={({navigation}) => {
+            return {
+              title: 'Detalhes sobre a Consulta',
+              headerTitleAlign: 'center',
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate('Home')}
+                  type="clear"
+                  icon={<Icon name="home" size={30} color="white" />}
+                />
+              ),
+            };
+          }}
         />
         <Stack.Screen
           name="VaccineForm"
-          options={{title: 'Cadastro de Vacina'}}
           component={VaccineForm}
+          options={({navigation}) => {
+            return {
+              title: 'Cadastro da Vacina',
+              headerTitleAlign: 'center',
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate('Home')}
+                  type="clear"
+                  icon={<Icon name="home" size={30} color="white" />}
+                />
+              ),
+            };
+          }}
         />
         <Stack.Screen
           name="VaccineDetails"
-          options={{title: 'Detalhes sobre a Vacina'}}
           component={VaccineDetails}
+          options={({navigation}) => {
+            return {
+              title: 'Detalhes sobre a Vacina',
+              headerTitleAlign: 'center',
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate('Home')}
+                  type="clear"
+                  icon={<Icon name="home" size={30} color="white" />}
+                />
+              ),
+            };
+          }}
         />
         <Stack.Screen
           name="VeterinaryHome"

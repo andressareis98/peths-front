@@ -25,7 +25,7 @@ export default () => {
   const [user, setUser] = useState({
     nome: '',
     crmv: '',
-    email: 'maira@gmail.com',
+    email: 'andressareis98@outlook.com',
     senha: 'teste123',
     confirmarSenha: '',
     isVeterenarySelected: false,

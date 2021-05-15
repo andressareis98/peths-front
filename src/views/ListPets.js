@@ -121,6 +121,9 @@ export default ({usuario, navigation}) => {
                     <PetAge anoNascimento={item.anoNascimento} />
                   </Text>
                 </View>
+                <View style={styles.dataPetItem}>
+                  <Text style={styles.textBoldPetItem}>VER HISTÓRICO</Text>
+                </View>
               </View>
             </TouchableOpacity>
 
@@ -193,6 +196,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '75%',
     alignItems: 'center',
+  },
+  textSeeProfile: {
+    color: commonStyles.colors.secundary,
   },
   buttons: {
     flexDirection: 'row',

@@ -133,87 +133,89 @@ export default ({route, navigation}) => {
             <Text style={styles.textAlterPhoto}>ALTERAR FOTO</Text>
           </TouchableOpacity>
         </View>
-        <FormPetInput
-          icon="paw"
-          onChangeText={nome => setPet({...pet, nome})}
-          placeholder="Informe o nome do pet"
-          value={pet.nome}
-        />
+        <ScrollView>
+          <FormPetInput
+            icon="paw"
+            onChangeText={nome => setPet({...pet, nome})}
+            placeholder="Informe o nome do pet"
+            value={pet.nome}
+          />
 
-        {getDatePicker()}
+          {getDatePicker()}
 
-        <FormPetInput
-          icon="weight"
-          keyboardType="decimal-pad"
-          onChangeText={peso => setPet({...pet, peso})}
-          placeholder="Informe o peso"
-          value={pet.peso}
-        />
+          <FormPetInput
+            icon="weight"
+            keyboardType="decimal-pad"
+            onChangeText={peso => setPet({...pet, peso})}
+            placeholder="Informe o peso"
+            value={pet.peso}
+          />
 
-        <View style={styles.containerCheckboxAndTitle}>
-          <View style={styles.containerCheckboxText}>
-            <Icon name="venus-mars" size={20} style={styles.icon} />
-            <Text style={styles.titleCheckbox}>Sexo: </Text>
+          <View style={styles.containerCheckboxAndTitle}>
+            <View style={styles.containerCheckboxText}>
+              <Icon name="venus-mars" size={20} style={styles.icon} />
+              <Text style={styles.titleCheckbox}>Sexo: </Text>
+            </View>
+            <View style={styles.containerCheckbox}>
+              <TouchableOpacity
+                style={styles.checkbox}
+                onPress={() => setPet({...pet, sexo: 'Fêmea'})}>
+                <CheckBox
+                  center
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={pet.sexo === 'Fêmea'}
+                  checkedColor={commonStyles.colors.secundary}
+                  onPress={() => setPet({...pet, sexo: 'Fêmea'})}
+                />
+                <Text style={styles.legendCheckbox}>Fêmea</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.checkbox}
+                onPress={() => setPet({...pet, sexo: 'Macho'})}>
+                <CheckBox
+                  center
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={pet.sexo === 'Macho'}
+                  checkedColor={commonStyles.colors.secundary}
+                  onPress={() => setPet({...pet, sexo: 'Macho'})}
+                />
+                <Text style={styles.legendCheckbox}>Macho</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.containerCheckbox}>
+
+          <FormPetInput
+            icon="plus"
+            onChangeText={observacoes => setPet({...pet, observacoes})}
+            placeholder="Alergias / informações relevantes"
+            value={pet.observacoes}
+          />
+
+          {pet.id && (
             <TouchableOpacity
-              style={styles.checkbox}
-              onPress={() => setPet({...pet, sexo: 'Fêmea'})}>
-              <CheckBox
-                center
-                checkedIcon="dot-circle-o"
-                uncheckedIcon="circle-o"
-                checked={pet.sexo === 'Fêmea'}
-                checkedColor={commonStyles.colors.secundary}
-                onPress={() => setPet({...pet, sexo: 'Fêmea'})}
-              />
-              <Text style={styles.legendCheckbox}>Fêmea</Text>
+              style={styles.button}
+              onPress={() => {
+                editPet(pet);
+                navigation.goBack();
+              }}>
+              <Text style={styles.customButtonText}>Salvar Alterações</Text>
             </TouchableOpacity>
+          )}
 
+          {!pet.id && (
             <TouchableOpacity
-              style={styles.checkbox}
-              onPress={() => setPet({...pet, sexo: 'Macho'})}>
-              <CheckBox
-                center
-                checkedIcon="dot-circle-o"
-                uncheckedIcon="circle-o"
-                checked={pet.sexo === 'Macho'}
-                checkedColor={commonStyles.colors.secundary}
-                onPress={() => setPet({...pet, sexo: 'Macho'})}
-              />
-              <Text style={styles.legendCheckbox}>Macho</Text>
+              style={styles.button}
+              onPress={() => {
+                addPet(pet);
+                navigation.goBack();
+              }}>
+              <Text style={styles.customButtonText}>Adicionar o Pet</Text>
             </TouchableOpacity>
-          </View>
-        </View>
-
-        <FormPetInput
-          icon="plus"
-          onChangeText={observacoes => setPet({...pet, observacoes})}
-          placeholder="Alergias / informações relevantes"
-          value={pet.observacoes}
-        />
-
-        {pet.id && (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              editPet(pet);
-              navigation.goBack();
-            }}>
-            <Text style={styles.customButtonText}>Salvar Alterações</Text>
-          </TouchableOpacity>
-        )}
-
-        {!pet.id && (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              addPet(pet);
-              navigation.goBack();
-            }}>
-            <Text style={styles.customButtonText}>Adicionar o Pet</Text>
-          </TouchableOpacity>
-        )}
+          )}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
