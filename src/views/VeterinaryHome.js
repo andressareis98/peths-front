@@ -59,8 +59,13 @@ export default ({usuario, navigation}) => {
         </View>
       </View>
 
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+      <Overlay
+        overlayStyle={styles.overlay}
+        isVisible={visible}
+        onBackdropPress={toggleOverlay}>
+        <Text style={styles.textCard}>Insira o ID do pet: </Text>
         <TextInput
+          placeholder="Informe o id do pet"
           style={styles.input}
           value={pet.petId}
           onChangeText={petId => setPet({petId: petId})}
@@ -68,12 +73,15 @@ export default ({usuario, navigation}) => {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
+          onPress={() => {
             navigation.navigate('PetProfile', {
               petId: pet.petId,
               usuario: usuario,
-            })
-          }>
+            });
+
+            toggleOverlay();
+            setPet({petId: ''});
+          }}>
           <Text style={styles.textButton}>Iniciar atendimento</Text>
         </TouchableOpacity>
       </Overlay>
@@ -136,5 +144,35 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     color: commonStyles.colors.secundary,
+  },
+  overlay: {
+    width: '93%',
+    height: '50%',
+    borderRadius: 50,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: commonStyles.colors.tertiary,
+  },
+  input: {
+    width: '100%',
+    height: 47,
+    color: commonStyles.colors.secundary,
+    marginVertical: 20,
+    backgroundColor: commonStyles.colors.lightBlue,
+    borderRadius: 50,
+    paddingLeft: 17,
+  },
+  button: {
+    backgroundColor: commonStyles.colors.secundary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    borderRadius: 50,
+    paddingVertical: 12,
+  },
+  textButton: {
+    color: commonStyles.colors.white,
+    fontSize: 15,
   },
 });
