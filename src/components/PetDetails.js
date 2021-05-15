@@ -47,9 +47,9 @@ export default ({pet}) => {
           <Text>{pet.sexo}</Text>
         </View>
 
-        <View style={styles.containerData}>
+        <View style={styles.obs}>
           <Text style={styles.title}>Observações: </Text>
-          <Text>{pet.observacoes}</Text>
+          <Text style={{flexWrap: 'wrap'}}>{pet.observacoes}</Text>
         </View>
 
         <TouchableOpacity onPress={toggleOverlay}>
@@ -112,5 +112,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontWeight: 'bold',
     color: commonStyles.colors.grayDark,
+  },
+  obs: {
+    marginTop: 5,
+    marginRight: 10,
   },
 });

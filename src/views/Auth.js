@@ -22,11 +22,12 @@ import commonStyles from '../commonStyles';
 
 export default () => {
   const navigation = useNavigation();
+
   const [user, setUser] = useState({
     nome: '',
     crmv: '',
-    email: 'andressareis98@outlook.com',
-    senha: 'teste123',
+    email: '',
+    senha: '',
     confirmarSenha: '',
     isVeterenarySelected: false,
     stageNew: false,
@@ -45,6 +46,8 @@ export default () => {
   const signup = async () => {
     try {
       await Services.signUp(user.nome, user.crmv, user.email, user.senha);
+      alterView();
+      setUser({});
       showSuccess('Usuário cadastrado!');
     } catch (e) {
       showError(e);
@@ -54,12 +57,14 @@ export default () => {
   const signin = async () => {
     try {
       const res = await Services.signIn(user.email, user.senha);
-
+      setUser({});
       axios.defaults.headers.common[
         'Authorization'
       ] = `bearer ${res.data.token}`;
 
-      navigation.navigate('Home', res.data);
+      navigation.reset({
+        routes: [{name: 'Home', params: res.data}],
+      });
     } catch (e) {
       showError(e);
     }
@@ -203,7 +208,7 @@ const styles = StyleSheet.create({
     backgroundColor: commonStyles.colors.primary,
   },
   title: {
-    fontSize: 100,
+    fontSize: 50,
     color: commonStyles.colors.white,
   },
   inputArea: {

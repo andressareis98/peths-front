@@ -59,37 +59,13 @@ export default ({usuario, navigation}) => {
     ]);
   };
 
-  const alertlogout = () => {
-    Alert.alert('Sair', `Deseja sair da sua conta?`, [
-      {
-        text: 'Não',
-        style: 'cancel',
-      },
-      {
-        text: 'Sim',
-        onPress: () => logout(),
-      },
-    ]);
-  };
-
-  const logout = () => {
-    navigation.navigate('Auth');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
       <View style={styles.containerTitle}>
         <Text numberOfLines={2} style={styles.title}>
-          Encontre o seu pet
+          Lista de Pets
         </Text>
-        <TouchableOpacity onPress={() => alertlogout()}>
-          <Ionicons
-            name="exit-outline"
-            size={40}
-            color={commonStyles.colors.white}
-          />
-        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -154,10 +130,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: commonStyles.colors.primary,
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingBottom: 15,
   },
   containerTitle: {
-    marginTop: 30,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -168,7 +144,7 @@ const styles = StyleSheet.create({
     color: commonStyles.colors.white,
   },
   listArea: {
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 15,
   },
   petItem: {

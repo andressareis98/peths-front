@@ -1,10 +1,13 @@
 import React from 'react';
+import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
 
 import {Button, Icon} from 'react-native-elements';
 
 import commonStyles from './commonStyles';
+import Services from '../src/services/Services';
 
 import Auth from './views/Auth';
 import Home from './views/Home';
@@ -32,13 +35,25 @@ export default props => {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{headerShown: false}}
+          options={({navigation}) => {
+            return {
+              title: '',
+              headerTitleAlign: 'center',
+              headerRight: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.reset({
+                      routes: [{name: 'Auth'}],
+                    });
+                  }}>
+                  <Text style={styles.text}>Sair</Text>
+                </TouchableOpacity>
+              ),
+            };
+          }}
         />
-        <Stack.Screen
-          name="PetList"
-          component={PetList}
-          options={{headerShown: false}}
-        />
+
+        <Stack.Screen name="PetList" component={PetList} />
         <Stack.Screen
           name="PetForm"
           component={PetForm}
@@ -73,7 +88,6 @@ export default props => {
             };
           }}
         />
-
         <Stack.Screen
           name="ConsultationForm"
           component={ConsultationForm}
@@ -166,3 +180,12 @@ const screenOptions = {
     fontWeight: 'bold',
   },
 };
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: commonStyles.colors.white,
+    marginRight: 10,
+  },
+});

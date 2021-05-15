@@ -95,7 +95,7 @@ export default {
     });
   },
 
-  logout: async => {
-    return delete axios.defaults.headers.common['Authorization'];
+  logout: () => {
+    delete axios.defaults.headers.common['Authorization'];
   },
 };
