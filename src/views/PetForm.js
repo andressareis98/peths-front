@@ -128,8 +128,9 @@ export default ({route, navigation}) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.containerAvatar}>
-          <Image source={{uri: pet.avatarUrl}} style={styles.avatar} />
           <TouchableOpacity onPress={() => chooseFile('photo')}>
+            <Image source={{uri: pet.avatarUrl}} style={styles.avatar} />
+
             <Text style={styles.textAlterPhoto}>ALTERAR FOTO</Text>
           </TouchableOpacity>
         </View>

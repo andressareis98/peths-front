@@ -49,7 +49,7 @@ export default ({pet}) => {
 
         <View style={styles.obs}>
           <Text style={styles.title}>Observações: </Text>
-          <Text style={{flexWrap: 'wrap'}}>{pet.observacoes}</Text>
+          <Text style={{paddingRight: 120}}>{pet.observacoes}</Text>
         </View>
 
         <TouchableOpacity onPress={toggleOverlay}>
