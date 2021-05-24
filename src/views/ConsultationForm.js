@@ -108,12 +108,12 @@ export default ({route, navigation}) => {
           </View>
 
           <View style={styles.viewData}>
-            <Text style={styles.title}>Peso: </Text>
+            <Text style={styles.title}>Peso(Kg): </Text>
             <TextInput
               style={styles.input}
               placeholderTextColor={commonStyles.colors.secundary}
               onChangeText={peso => setConsultation({...consultation, peso})}
-              placeholder="Informe o peso do pet"
+              placeholder="Informe o peso do animal"
               value={consultation.peso}
             />
           </View>

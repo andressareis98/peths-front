@@ -50,12 +50,12 @@ export default ({usuario, navigation}) => {
   };
 
   const confirmPetDeletion = pet => {
-    Alert.alert('Excluir Pet', `Deseja excluir o pet ${pet.nome}?`, [
+    Alert.alert('Excluir', `Deseja excluir ${pet.nome}?`, [
       {
-        text: 'Cancelar',
+        text: 'Não',
         style: 'cancel',
       },
-      {text: 'Deletar pet', onPress: () => deletePet(pet.id)},
+      {text: 'Sim', onPress: () => deletePet(pet.id)},
     ]);
   };
 

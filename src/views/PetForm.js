@@ -148,7 +148,7 @@ export default ({route, navigation}) => {
             icon="weight"
             keyboardType="decimal-pad"
             onChangeText={peso => setPet({...pet, peso})}
-            placeholder="Informe o peso"
+            placeholder="Informe o peso (Kg)"
             value={pet.peso}
           />
 
@@ -191,7 +191,7 @@ export default ({route, navigation}) => {
           <FormPetInput
             icon="plus"
             onChangeText={observacoes => setPet({...pet, observacoes})}
-            placeholder="Alergias / informações relevantes"
+            placeholder="Informações relevantes"
             value={pet.observacoes}
           />
 
