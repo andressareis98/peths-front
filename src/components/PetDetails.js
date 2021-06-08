@@ -38,7 +38,7 @@ export default ({pet}) => {
         </View>
 
         <View style={styles.containerData}>
-          <Text style={styles.title}>Peso: </Text>
+          <Text style={styles.title}>Peso (Kg): </Text>
           <Text>{pet.peso}</Text>
         </View>
 

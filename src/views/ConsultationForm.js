@@ -113,7 +113,7 @@ export default ({route, navigation}) => {
               style={styles.input}
               placeholderTextColor={commonStyles.colors.secundary}
               onChangeText={peso => setConsultation({...consultation, peso})}
-              placeholder="Informe o peso do animal"
+              placeholder="Informe o peso do animal(Kg)"
               value={consultation.peso}
             />
           </View>
@@ -121,7 +121,9 @@ export default ({route, navigation}) => {
           <View style={styles.viewData}>
             <Text style={styles.title}>Dignóstico: </Text>
             <TextInput
-              style={styles.input}
+              multiline
+              numberOfLines={4}
+              style={styles.largeTextInput}
               placeholderTextColor={commonStyles.colors.secundary}
               onChangeText={diagnostico =>
                 setConsultation({...consultation, diagnostico})
@@ -134,7 +136,9 @@ export default ({route, navigation}) => {
           <View style={styles.viewData}>
             <Text style={styles.title}>Prescrição: </Text>
             <TextInput
-              style={styles.input}
+              multiline
+              numberOfLines={4}
+              style={styles.largeTextInput}
               placeholderTextColor={commonStyles.colors.secundary}
               onChangeText={prescricao =>
                 setConsultation({...consultation, prescricao})
@@ -194,6 +198,15 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: commonStyles.colors.lightBlue,
     borderRadius: 50,
+    paddingLeft: 17,
+  },
+  largeTextInput: {
+    width: '100%',
+    height: 100,
+    color: commonStyles.colors.secundary,
+    marginTop: 5,
+    backgroundColor: commonStyles.colors.lightBlue,
+    borderRadius: 30,
     paddingLeft: 17,
   },
   inputData: {

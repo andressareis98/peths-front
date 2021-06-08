@@ -12,12 +12,12 @@ export default props => {
       </View>
 
       <View style={styles.containerText}>
-        <Text style={styles.titulo}>Peso:</Text>
+        <Text style={styles.titulo}>Peso(Kg):</Text>
         <Text>{props.peso}</Text>
       </View>
 
       <View style={styles.containerText}>
-        <Text style={styles.titulo}>Diagnostico:</Text>
+        <Text style={styles.titulo}>Diagnóstico:</Text>
         <Text>{props.diagnostico}</Text>
       </View>
     </View>
