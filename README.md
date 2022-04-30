@@ -8,7 +8,7 @@ O aplicativo **PETHS** tem como objetivo centralizar informações do animal de 
 - Histório de consultas e anotações;
 - Particularidades do animal;
 
-## Todos esses dados poderão ser acessados sem restrição de clínicas/veterinários.
+Todos esses dados poderão ser acessados sem restrição de clínicas/veterinários.
 
 # 💻 Tecnologias utilizadas
 
